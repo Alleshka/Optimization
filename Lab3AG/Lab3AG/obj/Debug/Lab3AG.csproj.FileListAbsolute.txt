@@ -1,0 +1,9 @@
+D:\Project\Sem10\Lab3AG\Lab3AG\bin\Debug\Lab3AG.dll
+D:\Project\Sem10\Lab3AG\Lab3AG\bin\Debug\Lab3AG.pdb
+D:\Project\Sem10\Lab3AG\Lab3AG\bin\Debug\MartixVectorAG.dll
+D:\Project\Sem10\Lab3AG\Lab3AG\bin\Debug\ParserAG.dll
+D:\Project\Sem10\Lab3AG\Lab3AG\bin\Debug\MartixVectorAG.pdb
+D:\Project\Sem10\Lab3AG\Lab3AG\bin\Debug\ParserAG.pdb
+D:\Project\Sem10\Lab3AG\Lab3AG\obj\Debug\Lab3AG.dll
+D:\Project\Sem10\Lab3AG\Lab3AG\obj\Debug\Lab3AG.pdb
+D:\Project\Sem10\Lab3AG\Lab3AG\obj\Debug\Lab3AG.csprojResolveAssemblyReference.cache

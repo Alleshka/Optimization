@@ -1,0 +1,8 @@
+D:\Project\Sem10\Lab3AG\Lab3AG\bin\Release\Lab3AG.dll
+D:\Project\Sem10\Lab3AG\Lab3AG\bin\Release\Lab3AG.pdb
+D:\Project\Sem10\Lab3AG\Lab3AG\bin\Release\MartixVectorAG.dll
+D:\Project\Sem10\Lab3AG\Lab3AG\bin\Release\ParserAG.dll
+D:\Project\Sem10\Lab3AG\Lab3AG\bin\Release\MartixVectorAG.pdb
+D:\Project\Sem10\Lab3AG\Lab3AG\bin\Release\ParserAG.pdb
+D:\Project\Sem10\Lab3AG\Lab3AG\obj\Release\Lab3AG.dll
+D:\Project\Sem10\Lab3AG\Lab3AG\obj\Release\Lab3AG.pdb

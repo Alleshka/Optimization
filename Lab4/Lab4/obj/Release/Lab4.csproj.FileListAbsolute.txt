@@ -1,0 +1,12 @@
+D:\Project\Sem10\Lab4\Lab4\bin\Release\Lab4.exe.config
+D:\Project\Sem10\Lab4\Lab4\bin\Release\Lab4.exe
+D:\Project\Sem10\Lab4\Lab4\bin\Release\Lab4.pdb
+D:\Project\Sem10\Lab4\Lab4\bin\Release\Lab3AG.dll
+D:\Project\Sem10\Lab4\Lab4\bin\Release\MartixVectorAG.dll
+D:\Project\Sem10\Lab4\Lab4\bin\Release\ParserAG.dll
+D:\Project\Sem10\Lab4\Lab4\bin\Release\Lab3AG.pdb
+D:\Project\Sem10\Lab4\Lab4\bin\Release\MartixVectorAG.pdb
+D:\Project\Sem10\Lab4\Lab4\bin\Release\ParserAG.pdb
+D:\Project\Sem10\Lab4\Lab4\obj\Release\Lab4.csprojResolveAssemblyReference.cache
+D:\Project\Sem10\Lab4\Lab4\obj\Release\Lab4.exe
+D:\Project\Sem10\Lab4\Lab4\obj\Release\Lab4.pdb
