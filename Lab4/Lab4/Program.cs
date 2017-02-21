@@ -37,7 +37,7 @@ namespace Lab4
                 lab = new Lab4(func, new Vector(x));
 
                 minpoint = lab.Start();
-                Console.WriteLine("Минимум в точке: " + minpoint.printVector() + " и равен " + temp.Parse(func, minpoint.ch));
+                Console.WriteLine("Минимум в точке: " + minpoint.printVector() + " и равен " + temp.Parse(func, minpoint.ch.ToArray()));
 
             } while (true);
         }

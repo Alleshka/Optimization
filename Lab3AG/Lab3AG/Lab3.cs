@@ -6,87 +6,178 @@ namespace Lab3AG
 {
     public class Lab3
     {
+
         private string _func; // Рабочая функция
-        private Vector _X; // Стартовая точка
-        private Vector _P;
-        private int countVar; // Число переменных
+        private string _countVar; // Количество переменных
         private double _eps;
+        private int _maxCount; // Максимальное количество переменных
 
-        private int n = 80;
-
-        public Lab3()
-        {
-        }
-
-        private double y(Vector X, double alpha)
-        {
-            Parser temp = new Parser();
-
-            //Console.WriteLine("Old Vector" + X.printVector());
-            Vector t = Point(X, alpha); // Переходим в новую точку
-            //Console.WriteLine("New Vector" + y.printVector());
-
-            return Convert.ToDouble(temp.Parse(this._func, t.ch.ToArray()));
-        }
+        private Vector _X0; // Стартовая точка
+        private Vector _P; // Направление
 
         // Переход в новую точку
+        public Vector Point(double alpha)
+        {
+            return _X0 + alpha * _P;
+        }
         public Vector Point(Vector X, double alpha)
         {
             return X + alpha * _P;
         }
-
-        private Vector sven()
+        public Vector Point(Vector X, Vector P, double alpha)
         {
+            return X + alpha * P;
+        }
 
-            Vector tempX = _X;
+        private double y(double alpha)
+        {
+            Vector temp = Point(alpha);
 
-            double xprev = 0;
-            double x = 0.01;
+            Parser pars = new Parser();
+            return Convert.ToDouble(pars.Parse(_func, temp.ch));
+        }
+        private double y(Vector X, double alpha)
+        {
+            Vector temp = Point(X, alpha);
 
-            double h = Math.Pow(10, -3);
+            Parser pars = new Parser();
+            return Convert.ToDouble(pars.Parse(_func, temp.ch));
+        }
 
-            if (y(tempX, x) >= y(tempX, xprev)) h *= (-1);
+        private double dy(double alpha)
+        {
+            Vector temp = Point(alpha);
+            Vector G = new Vector(temp.ch.Count);
+            G.NullInit();
 
-            _X = Point(tempX, x);
+            Parser prs = new Parser();
 
-            int k = 0;
+            /* for (int i = 0; i < temp.ch.Count; i++)
+             {
+                 //Console.WriteLine("Проблемы начались на " + i + "ой итерации с " + temp.printVector());
 
-            do
+                 G.ch[i] = prs.DiffFunc(_func, temp.ch, i);
+
+                 //Console.WriteLine("G = " + G.printVector());
+             }*/
+
+            G = Grad(temp);
+
+            //Console.WriteLine("Значения производных: " + G.printVector());
+
+            return temp * _P;
+        }
+
+        private Vector Grad(Vector X)
+        {
+            double h = this._eps;
+            double[] ch = new double[X.ch.Count];
+
+            for (int i = 0; i < X.ch.Count; i++)
             {
-                xprev = x;
-                x += h;
-
-                h *= 2;
-
-                if (y(tempX, x) > y(tempX, xprev)) break;
-
-                tempX = Point(tempX, x);
-
-                k++; if (k >= n) break;
-
-            } while (true);
-
-            double[] ch = new double[2];
-
-            if (x > xprev)
-            {
-                ch[0] = xprev;
-                ch[1] = x;
-
-            }
-            else
-            {
-                ch[0] = x;
-                ch[1] = xprev;
+                ch[i] = (y(X.ch[i] + h) - (y(X.ch[i] - h))) / (2 * h);
             }
 
             return new Vector(ch);
         }
 
+
+        private Vector Sven1()
+        {
+            int k = 0;
+
+            double _h = Math.Pow(10, -2);
+            double alpha = Math.Pow(10, -2);
+
+            if (y(alpha + _h) > y(alpha)) _h = -_h;
+
+            do
+            {
+                _h *= 2;
+                alpha += _h;
+                k++;
+
+                if (k >= this._maxCount) break;
+            } while (y(alpha + _h) < y(alpha));
+
+            double[] ch = new double[2];
+            if (_h > 0)
+            {
+                ch[0] = alpha - _h;
+                ch[1] = alpha + _h;
+            }
+            else
+            {
+                ch[0] = alpha + _h;
+                ch[1] = alpha - _h;
+            }
+
+            return new Vector(ch);
+        }
+        private Vector Sven2()
+        {
+            double alpha = Math.Pow(10, -3);
+            double h = Math.Pow(10, -3);
+            int k = 0;
+            double df;
+
+            df = dy(alpha);
+
+            if (df >= 0) h = (-1) * h;
+
+            do
+            {
+                h *= 2;
+                alpha += h;
+                k++;
+                if (k >= _maxCount) break;
+            } while (dy(alpha - h) * dy(alpha) > 0);
+
+            double[] ch = new double[2];
+
+            if (h > 0)
+            {
+                ch[0] = alpha - h;
+                ch[1] = alpha;
+            }
+            else
+            {
+                ch[1] = alpha - h;
+                ch[0] = alpha;
+            }
+
+            return new Vector(ch);
+        }
+        private double balcan(Vector ch)
+        {
+            double a = ch.ch[0]; double b = ch.ch[1];
+
+            double c;
+
+            int k = 1;
+
+            do
+            {
+                //Console.WriteLine("Бальцан, итерация " + k);
+                //Console.WriteLine("Начальные границы [" + a + "; " + b + "]");
+                c = (a + b) / 2;
+
+                if (dy(c) > 0) b = c;
+                else a = c;
+
+                k++;
+                //Console.WriteLine("Конечные границы [" + a + "; " + b + "]");
+                if (k >= this._maxCount) break;
+
+            } while (Math.Abs(b - a) >= this._eps);
+
+            //Console.WriteLine("Вернули: конечные границы[" + a + "; " + b + "]");
+            //Console.WriteLine((a + b) / 2);
+            return (a + b) / 2;
+        }
+
         private double zs2(Vector ch)
         {
-            Vector tempX = _X;
-
             double a = ch.ch[0]; double b = ch.ch[1];
 
             double len = Math.Abs(a - b);
@@ -103,7 +194,7 @@ namespace Lab3AG
             do
             {
 
-                if (y(tempX, l) < y(tempX, m))
+                if (y(l) < y(m))
                 {
                     //a = a;
                     b = m;
@@ -125,29 +216,35 @@ namespace Lab3AG
 
                 k++;
 
-                if (k >= n)  break;         
+                if (k >= _maxCount) break;
             }
             while ((b - a) >= _eps);
 
             return (a + b) / 2;
         }
 
-        public double Start(string func, Vector X, Vector P, double eps)
+
+        public double Start(string func, Vector X0, Vector P, double eps)
         {
-            Parser temp = new Parser();
-
-            this._func = func;
-            this.countVar = Convert.ToInt32(temp.CheckParse(func));
-
-            _X = X;
-            _P = P;
+            this._func = func;         
+            this._X0 = X0;
+            this._P = P;
             this._eps = eps;
 
-            Vector ch = sven(); //Console.WriteLine("Свен отработал:" + ch.printVector());
-            double min = zs2(ch); //Console.WriteLine("ЗС отработал" + min);
+            this._maxCount = 100;
+
+            Parser temp = new Parser();
+            this._countVar = temp.CheckParse(_func);
+
+            //Console.WriteLine("Начали Свен1");
+            Vector ch = Sven1();
+            //Console.WriteLine("Закончили свен 1. Границы: " + ch.printVector());
+
+            //Console.WriteLine("Начали бальцана");
+            double min = zs2(ch);
+            //Console.WriteLine("Конец бальцана");
 
             return min;
-
         }
     }
 }

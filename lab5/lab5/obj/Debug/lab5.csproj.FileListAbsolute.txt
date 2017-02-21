@@ -10,3 +10,15 @@ D:\Project\Sem10\lab5\lab5\bin\Debug\ParserAG.pdb
 D:\Project\Sem10\lab5\lab5\obj\Debug\lab5.csprojResolveAssemblyReference.cache
 D:\Project\Sem10\lab5\lab5\obj\Debug\lab5.exe
 D:\Project\Sem10\lab5\lab5\obj\Debug\lab5.pdb
+D:\Project\Sem10\Optimization\lab5\lab5\bin\Debug\lab5.exe.config
+D:\Project\Sem10\Optimization\lab5\lab5\obj\Debug\lab5.exe
+D:\Project\Sem10\Optimization\lab5\lab5\obj\Debug\lab5.pdb
+D:\Project\Sem10\Optimization\lab5\lab5\bin\Debug\lab5.exe
+D:\Project\Sem10\Optimization\lab5\lab5\bin\Debug\lab5.pdb
+D:\Project\Sem10\Optimization\lab5\lab5\bin\Debug\Lab3AG.dll
+D:\Project\Sem10\Optimization\lab5\lab5\bin\Debug\MartixVectorAG.dll
+D:\Project\Sem10\Optimization\lab5\lab5\bin\Debug\ParserAG.dll
+D:\Project\Sem10\Optimization\lab5\lab5\bin\Debug\Lab3AG.pdb
+D:\Project\Sem10\Optimization\lab5\lab5\bin\Debug\MartixVectorAG.pdb
+D:\Project\Sem10\Optimization\lab5\lab5\bin\Debug\ParserAG.pdb
+D:\Project\Sem10\Optimization\lab5\lab5\obj\Debug\lab5.csprojResolveAssemblyReference.cache

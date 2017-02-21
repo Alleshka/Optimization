@@ -65,7 +65,8 @@ namespace ParserAG
                 if (cursyb == "(") { TempStack.Push(cursyb); temp = temp.Remove(0, 1); }// Если символ - открывающая скобка
                 if (cursyb == ")") { ActionBraket(ref TempStack); temp = temp.Remove(0, 1); }
                 if (OperatorCheck(cursyb)) { ActionOperator(cursyb, ref TempStack); temp = temp.Remove(0, 1); }
-                
+
+                //Console.WriteLine(temp);
 
                 if (TempStack.Count() != 0)
                 {
@@ -116,6 +117,8 @@ namespace ParserAG
         /// <returns></returns>
         private bool NumberCheck(string temp)
         {
+            if (temp == "0") return true;
+
             string Reg = @"[\d\.\,]"; // Является ли символ числом
             Regex tmp = new Regex(Reg);
 
@@ -318,19 +321,19 @@ namespace ParserAG
             {
                 if (_polandList.Count()==0) break;
                 cursyb = Convert.ToString(_polandList[0]);
-               /* Console.WriteLine("Считан символ " + cursyb);
-                Console.WriteLine("Строка: " + printlist());
-                Console.WriteLine("Стек: " + printstack(TempStack));*/
+               /* //Console.WriteLine("Считан символ " + cursyb);
+                //Console.WriteLine("Строка: " + printlist());
+                //Console.WriteLine("Стек: " + printstack(TempStack));*/
 
                 if ((FuncCheck(cursyb)) || (NumberCheck(cursyb))) TempStack.Push(cursyb);
                 if (OperatorCheck(cursyb)) Operation(ref TempStack, cursyb);
 
                 _polandList.RemoveAt(0);
 
-                /*Console.WriteLine("Символ " + cursyb + " обработан");
-                Console.WriteLine("Строка: " + printlist());
-                Console.WriteLine("Стек: " + printstack(TempStack));
-                Console.ReadLine();*/
+                /*//Console.WriteLine("Символ " + cursyb + " обработан");
+                //Console.WriteLine("Строка: " + printlist());
+                //Console.WriteLine("Стек: " + printstack(TempStack));
+                //Console.ReadLine();*/
 
 
 
@@ -407,10 +410,15 @@ namespace ParserAG
 
             return temp;
         }
-        public string Parse(string func, double[] temp)
+
+
+        public string Parse(string func, List<double> temp)
         {
+            //Console.WriteLine("OldString:" + func);
 
             func = func.Replace(" ", ""); // Удаляем пробелы
+
+            //Console.WriteLine("Del space" + func);
 
             List<string> tempList = new List<string>();
 
@@ -421,17 +429,22 @@ namespace ParserAG
                 tempList.Add(t.Value);
             }
 
-            IEnumerable<string> returnS = tempList.Distinct();
+            //Console.WriteLine("Mathccont");
 
+            IEnumerable<string> returnS = tempList.Distinct();
             returnS = returnS.OrderBy(x => x);
+
+            //Console.WriteLine("Oreder");
 
             int i = 0;
 
             foreach (string t in returnS)
             {
-                if (temp[i] > 0)
+                //Console.WriteLine("T = " + t); //Console.WriteLine("Temp[i] = " + temp[i]);
+
+                if (temp[i] >= 0)
                 {
-                    if (Math.Abs(temp[i]) <= Math.Pow(10, -4)) func = func.Replace(t, NewString(temp[i]));
+                    if ((Math.Abs(temp[i]) <= Math.Pow(10, -4))&&(temp[i]!=0)) func = func.Replace(t, NewString(temp[i]));
                     else func = func.Replace(t, Convert.ToString(temp[i]));
                 }
                 else
@@ -441,12 +454,13 @@ namespace ParserAG
 
                 }
                 i++;
+                //Console.WriteLine("NewStr1" + func);
             }
 
 
 
             //Console.WriteLine("NewString" + func);
-            //Console.ReadKey();*/
+            ////Console.ReadKey();*/
 
             return Parse(func);
         }
@@ -472,24 +486,25 @@ namespace ParserAG
             return sout;
         }
 
-        public double DiffFunc(string func, double[] temp, int i)
+        public double DiffFunc(string func, List<double> temp, int i)
         {
-            double[] k = new double[temp.Length];
+            List<double> k = new List<double>();
 
-            for (int j = 0; j < temp.Length; j++) k[j] = temp[j];
+            for (int j = 0; j < temp.Count; j++) k.Add(temp[j]);
 
-           /* Console.Write("temp1 = ("); for (int j = 0; j < temp.Length; j++) Console.Write(k[j] + ";");
-            Console.WriteLine();*/
+            //Console.Write("temp1 = ("); for (int j = 0; j < temp.Count; j++) //Console.Write(k[j] + ";");
+            //Console.WriteLine();
 
             double fd = Convert.ToDouble(Parse(func, k));
             k[i] = k[i] + Math.Pow(10, -8);
-
-           /* Console.Write("temp2 (temp+h) = ("); for (int j = 0; j < temp.Length; j++) Console.Write(k[j] + ";");
-            Console.WriteLine();*/
+            
+            //Console.Write("temp2 (temp+h) = ("); for (int j = 0; j < temp.Count; j++) //Console.Write(k[j] + ";");
+            //Console.WriteLine();
 
             double fd0 = Convert.ToDouble(Parse(func, k));
+            //Console.WriteLine("Запарсили");
 
-            return (fd0 - fd) / Math.Pow(10, -7);
+            return (fd0 - fd) / Math.Pow(10, -8);
         }
 
         // Надо сначала во все функции внести возврат ERROR. Если ERROR, то сразу останавливаем прогу и выдаём ошибку.

@@ -11,7 +11,6 @@ namespace lab5
 {
     class Paul2_A2_
     {
-
         private string _func;
         private int count;
         private Vector _X0;
@@ -45,42 +44,45 @@ namespace lab5
             }
             P.Add(P[0]); // Теперь имеем {e1, e2...e1};
 
-            for (int i = 0; i < P.Count; i++)
-            {
-                Console.WriteLine("P" + i + P[i].printVector());
-            }
 
             double alpha;
             Lab3 labs;
 
             Vector curX = X1; Vector X2 = X1;
 
+
             while (true)
             {
-
+                Console.WriteLine("X1: " + X1.printVector());
                 curX = X1; X2 = X1;
+
 
                 // Совершаем n поисков
                 for (int i = 0; i < P.Count; i++)
                 {
-                    Console.WriteLine(i + "-й поиск");
+
                     labs = new Lab3();
+
                     alpha = labs.Start(this._func, curX, P[i], this._eps); // Находим вектор
+
+                    
                     curX = labs.Point(curX, alpha); // Перходим в новую точку
+
                     if (i == 0) X2 = curX; // Если точка X2
                 }
 
+
                 Vector dk = curX - X2; // Находим вектор
-
-
-
-                Console.WriteLine("Произведёнт поиск П2");
+                curX = X2;
 
                 if (k >= this.count - 1)
                 {
+
                     labs = new Lab3();
                     alpha = labs.Start(this._func, curX, dk, this._eps);
+
                     curX = labs.Point(curX, alpha);
+
                     return curX;
                 }
                 else
@@ -92,11 +94,7 @@ namespace lab5
                     X1 = curX;
                     k++;   
                 }
-            }
-
-
-
-           
+            }           
         }
     }
 }

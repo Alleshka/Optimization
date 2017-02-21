@@ -3,3 +3,8 @@ D:\Project\Sem10\ParserAG\ParserAG\bin\Debug\ParserAG.pdb
 D:\Project\Sem10\ParserAG\ParserAG\obj\Debug\ParserAG.dll
 D:\Project\Sem10\ParserAG\ParserAG\obj\Debug\ParserAG.pdb
 D:\Project\Sem10\ParserAG\ParserAG\obj\Debug\ParserAG.csprojResolveAssemblyReference.cache
+D:\Project\Sem10\Optimization\ParserAG\ParserAG\obj\Debug\ParserAG.csprojResolveAssemblyReference.cache
+D:\Project\Sem10\Optimization\ParserAG\ParserAG\obj\Debug\ParserAG.dll
+D:\Project\Sem10\Optimization\ParserAG\ParserAG\obj\Debug\ParserAG.pdb
+D:\Project\Sem10\Optimization\ParserAG\ParserAG\bin\Debug\ParserAG.dll
+D:\Project\Sem10\Optimization\ParserAG\ParserAG\bin\Debug\ParserAG.pdb

@@ -28,7 +28,6 @@ namespace lab5
 
         public Vector Start()
         {
-
             int k = 1;
 
             Vector X1 = _X0;
@@ -50,26 +49,55 @@ namespace lab5
 
             while (true)
             {
-
-                // Console.WriteLine("K = " + k);
                 curX = X1;
+                Console.WriteLine("Итерация: " + k);
+                Console.Write("Стартовая точка: " + curX.printVector());
+                Console.WriteLine("Векторы P:");
+                for (int i = 0; i < P.Count; i++) Console.Write("P" + i + P[i].printVector());
+                Console.WriteLine();
 
+                Console.WriteLine("Начинаем поиски");
                 // Совершаем n поисков
                 for (int i = 0; i < P.Count; i++)
                 {
-                 //   Console.WriteLine(i + "-й поиск");
                     labs = new Lab3();
+
+                    Console.Write("X = " + curX.printVector());
+                    Console.Write("P = " + P[i].printVector());
+
                     alpha = labs.Start(this._func, curX, P[i], this._eps); // Находим вектор
-                    curX = labs.Point(curX, alpha); // Перходим в новую точку           
+
+                    Console.WriteLine("Alpha = " + alpha);
+
+                    curX = labs.Point(curX, alpha); // Перходим в новую точку         
+
+                    Console.Write("Новая точка: " + curX.printVector());
                 }
+                Console.WriteLine();
+                Console.WriteLine("Находим Dk");
+                Console.Write("CurX: " + curX.printVector());
+                Console.Write("X1 - " + X1.printVector());
+
 
                 Vector dk = curX - X1; // Находим вектор
 
-                // curX = X1;
+                Console.Write("DK = " + dk.printVector());
+
+                //curX = X1;
+                Console.WriteLine();
+                Console.WriteLine("Переход в точку 4");
 
                 labs = new Lab3();
+                Console.Write("CurX - " + curX.printVector());
+                Console.Write("P - " + dk.printVector());
+
                 alpha = labs.Start(this._func, curX, dk, this._eps); // Ищем щё один вектор
+
+                Console.WriteLine("Alpha = " + alpha);
+
                 curX = labs.Point(curX, alpha); // Переходим в точку X(n+2);
+
+                Console.WriteLine("Переход в нову точку: " + curX.printVector());
 
                 if (k >= count) break;
                 else
@@ -79,9 +107,14 @@ namespace lab5
 
                     P.RemoveAt(0);
                     P.Add(dk);
+
+                    Console.WriteLine();
+                    Console.WriteLine("_________________");
+                    Console.WriteLine();
                 }
             }
 
+            Console.WriteLine("Минимум: " + curX.printVector());
             return curX;
         }
     }

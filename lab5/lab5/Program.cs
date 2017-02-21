@@ -40,12 +40,14 @@ namespace lab5
                 P1 = new Paul1_A1_(func, new Vector(x), Math.Pow(10, -5));
                 P = new Paul2_A2_(func, new Vector(x), Math.Pow(10, -5));
 
-                Vector answ = P.Start();
+                Vector answ;
 
-                Console.WriteLine("Паул2: инимум в точке " + answ.printVector());
 
                 answ = P1.Start();
                 Console.WriteLine("Паул1: минимум в точке " + answ.printVector());
+
+                /*answ = P.Start();
+                Console.WriteLine("Паул2: инимум в точке " + answ.printVector());*/
 
             } while (true);
 
