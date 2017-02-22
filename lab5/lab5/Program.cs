@@ -46,8 +46,8 @@ namespace lab5
                 answ = P1.Start();
                 Console.WriteLine("Паул1: минимум в точке " + answ.printVector());
 
-                /*answ = P.Start();
-                Console.WriteLine("Паул2: инимум в точке " + answ.printVector());*/
+                answ = P.Start();
+                Console.WriteLine("Паул2: инимум в точке " + answ.printVector());
 
             } while (true);
 
