@@ -73,7 +73,7 @@ namespace lab5
 
 
                 Vector dk = curX - X2; // Находим вектор
-                curX = X2;
+                //curX = X4;
 
                 if (k >= this.count - 1)
                 {

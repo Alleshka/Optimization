@@ -231,7 +231,7 @@ namespace Lab3AG
             this._P = P;
             this._eps = eps;
 
-            this._maxCount = 100;
+            this._maxCount = 35;
 
             Parser temp = new Parser();
             this._countVar = temp.CheckParse(_func);

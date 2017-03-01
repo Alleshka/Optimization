@@ -1,0 +1,8 @@
+D:\Project\Sem10\Optimization\ParserAG\TestParser\bin\Debug\TestParser.exe.config
+D:\Project\Sem10\Optimization\ParserAG\TestParser\bin\Debug\TestParser.exe
+D:\Project\Sem10\Optimization\ParserAG\TestParser\bin\Debug\TestParser.pdb
+D:\Project\Sem10\Optimization\ParserAG\TestParser\bin\Debug\ParserAG.dll
+D:\Project\Sem10\Optimization\ParserAG\TestParser\bin\Debug\ParserAG.pdb
+D:\Project\Sem10\Optimization\ParserAG\TestParser\obj\Debug\TestParser.csprojResolveAssemblyReference.cache
+D:\Project\Sem10\Optimization\ParserAG\TestParser\obj\Debug\TestParser.exe
+D:\Project\Sem10\Optimization\ParserAG\TestParser\obj\Debug\TestParser.pdb
