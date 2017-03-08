@@ -23,7 +23,10 @@ namespace Pauell
 
             Parser temp = new Parser(); this.count = Convert.ToInt32(temp.CheckParse(_func));
 
-            _X0 = X;
+            _X0 = new Vector(X.ch.Count);
+            _X0.NullInit();
+            _X0 += X;
+
             _eps = eps;
 
             Position = new List<Vector>();
@@ -99,6 +102,8 @@ namespace Pauell
                 {
                     X1 = curX;
                     k++;
+
+                    if (k >= 25) break;
 
                     int mmax = GetMaxIndex(M);
 

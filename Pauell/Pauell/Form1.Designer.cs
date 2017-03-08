@@ -47,6 +47,7 @@
             this.checkBox6 = new System.Windows.Forms.CheckBox();
             this.checkBox7 = new System.Windows.Forms.CheckBox();
             this.checkBox8 = new System.Windows.Forms.CheckBox();
+            this.checkBox9 = new System.Windows.Forms.CheckBox();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.SuspendLayout();
             // 
@@ -98,7 +99,11 @@
             "(x2-x1)^2+(1-x1)^2",
             "2*x1^2+2*x2^2-2*x1*x2-6*x1-6",
             "4*x1^2+4*x2^2-4*x1*x2-12*x2",
-            "2*x1^2+2*x2^2-x1*x2+x1+10"});
+            "2*x1^2+2*x2^2-x1*x2+x1+10",
+            "2*x1^2+x2^2-2*x1*x2+x2",
+            "x1^2+2*x2^2-2*x1*x2+x1",
+            "4*x1^2+4*x2^2-6*x1*x2+x1",
+            "2*x1^2+2*x2^2-6*x1*x2+x1"});
             this.comboBox1.Location = new System.Drawing.Point(108, 32);
             this.comboBox1.Name = "comboBox1";
             this.comboBox1.Size = new System.Drawing.Size(206, 24);
@@ -109,9 +114,10 @@
             this.pictureBox1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.pictureBox1.Location = new System.Drawing.Point(477, 12);
+            this.pictureBox1.BackColor = System.Drawing.SystemColors.ButtonHighlight;
+            this.pictureBox1.Location = new System.Drawing.Point(570, 12);
             this.pictureBox1.Name = "pictureBox1";
-            this.pictureBox1.Size = new System.Drawing.Size(652, 441);
+            this.pictureBox1.Size = new System.Drawing.Size(652, 519);
             this.pictureBox1.TabIndex = 5;
             this.pictureBox1.TabStop = false;
             this.pictureBox1.Paint += new System.Windows.Forms.PaintEventHandler(this.pictureBox1_Paint);
@@ -151,7 +157,7 @@
             // 
             // button1
             // 
-            this.button1.Location = new System.Drawing.Point(335, 213);
+            this.button1.Location = new System.Drawing.Point(341, 155);
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(122, 45);
             this.button1.TabIndex = 9;
@@ -178,10 +184,13 @@
             // 
             // textBox3
             // 
-            this.textBox3.Location = new System.Drawing.Point(8, 264);
+            this.textBox3.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left)));
+            this.textBox3.Location = new System.Drawing.Point(8, 269);
             this.textBox3.Multiline = true;
             this.textBox3.Name = "textBox3";
-            this.textBox3.Size = new System.Drawing.Size(450, 189);
+            this.textBox3.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
+            this.textBox3.Size = new System.Drawing.Size(532, 262);
             this.textBox3.TabIndex = 13;
             // 
             // checkBox4
@@ -241,19 +250,31 @@
             // checkBox8
             // 
             this.checkBox8.AutoSize = true;
-            this.checkBox8.Enabled = false;
-            this.checkBox8.Location = new System.Drawing.Point(108, 206);
+            this.checkBox8.Location = new System.Drawing.Point(215, 179);
             this.checkBox8.Name = "checkBox8";
             this.checkBox8.Size = new System.Drawing.Size(99, 21);
             this.checkBox8.TabIndex = 20;
             this.checkBox8.Text = "Хук Дживс";
             this.checkBox8.UseVisualStyleBackColor = true;
+            this.checkBox8.CheckedChanged += new System.EventHandler(this.checkBox8_CheckedChanged);
+            // 
+            // checkBox9
+            // 
+            this.checkBox9.AutoSize = true;
+            this.checkBox9.Enabled = false;
+            this.checkBox9.Location = new System.Drawing.Point(215, 206);
+            this.checkBox9.Name = "checkBox9";
+            this.checkBox9.Size = new System.Drawing.Size(111, 21);
+            this.checkBox9.TabIndex = 21;
+            this.checkBox9.Text = "Нелдер Мид";
+            this.checkBox9.UseVisualStyleBackColor = true;
             // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1141, 465);
+            this.ClientSize = new System.Drawing.Size(1234, 543);
+            this.Controls.Add(this.checkBox9);
             this.Controls.Add(this.checkBox8);
             this.Controls.Add(this.checkBox7);
             this.Controls.Add(this.checkBox6);
@@ -303,6 +324,7 @@
         private System.Windows.Forms.CheckBox checkBox6;
         private System.Windows.Forms.CheckBox checkBox7;
         private System.Windows.Forms.CheckBox checkBox8;
+        private System.Windows.Forms.CheckBox checkBox9;
     }
 }
 

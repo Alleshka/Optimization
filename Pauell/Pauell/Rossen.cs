@@ -26,7 +26,10 @@ namespace Pauell
 
             this._func = func;
             this._count = Convert.ToInt32(temp.CheckParse(this._func));
-            this._X0 = x;
+
+            _X0 = new Vector(x.ch.Count);
+            _X0.NullInit();
+            _X0 += x;
 
             double[] ch = new double[_count];
         }

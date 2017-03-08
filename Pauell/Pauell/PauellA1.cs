@@ -20,7 +20,10 @@ namespace Pauell
 
             Parser temp = new Parser(); this.count = Convert.ToInt32(temp.CheckParse(_func));
 
-            _X0 = X;
+            _X0 = new Vector(X.ch.Count);
+            _X0.NullInit();
+            _X0 += X;
+
             _eps = eps;
 
             Position = new List<Vector>();
@@ -51,6 +54,8 @@ namespace Pauell
             {
                 curX = X1;
 
+
+
                 Position.Add(curX);
 
                 for (int i = 0; i < P.Count; i++) Console.Write("P" + i + P[i].printVector());
@@ -58,8 +63,8 @@ namespace Pauell
                 {
                     labs = new Lab3();
                     alpha = labs.Start(this._func, curX, P[i], this._eps); // Находим вектор
-                    curX = labs.Point(curX, alpha); // Перходим в новую точку      
-                    Position.Add(curX);   
+                    curX = labs.Point(curX, alpha); // Перходим в новую точку    
+                    Position.Add(curX);
                 }
 
 

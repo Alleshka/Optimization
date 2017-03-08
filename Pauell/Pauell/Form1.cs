@@ -6,6 +6,7 @@ using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Threading;
 using System.Windows.Forms;
 using ParserAG;
 using MartixVectorAG;
@@ -19,11 +20,23 @@ namespace Pauell
         private PauellA3 P3 = null;
         private Rossen Ros = null;
 
+        private Huck huk = null;
+
 
         private List<Vector> PosP1 = null;
         private List<Vector> PosP2 = null;
         private List<Vector> PosP3 = null;
         private List<Vector> PosRossen = null;
+        private List<Vector> PosHuck = null;
+
+        private Thread _ThreadPaul;
+        private Thread _ThreadRoss;
+        private Thread _ThreadHD;
+
+        private string _func;
+        private Vector X0;
+
+        private List<string> answers;
 
         public Form1()
         {
@@ -48,20 +61,32 @@ namespace Pauell
 
         private void button1_Click(object sender, EventArgs e)
         {
-            Start();
-            pictureBox1.Refresh();
+            try
+            {
+                Start();
+                pictureBox1.Refresh();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
         }
 
         private void Start()
         {
+
+            answers = new List<string>();
+
             PosP1 = null;
             PosP2 = null;
             PosP3 = null;
             PosRossen = null;
+            PosHuck = null;
+
+            pictureBox1.Refresh();
 
             textBox3.Text = "";
 
-            string _func;
             if (radioButton1.Checked == false) _func = textBox1.Text;
             else _func = comboBox1.Text;
 
@@ -80,31 +105,72 @@ namespace Pauell
                 variable.Add(Convert.ToDouble(temp[i]));
             }
 
-            Vector X0 = new Vector(variable.ToArray());
+            X0 = new Vector(variable.ToArray());
 
-            if (checkBox1.Checked == true)
+            _ThreadPaul = new Thread(PaulsStart);
+            _ThreadRoss = new Thread(RossenbrokStart);
+            _ThreadHD = new Thread(HDStart);
+
+            _ThreadRoss.Start();
+            _ThreadHD.Start();
+            _ThreadPaul.Start();
+
+            _ThreadRoss.Join();
+            _ThreadPaul.Join();
+            _ThreadHD.Join();
+
+            PrintText();
+
+        }
+
+        private void PaulsStart()
+        {
+            P1 = new PauellA1(_func, X0, Math.Pow(10, -8));
+            answers.Add("П1" + Environment.NewLine + "Минимум в точке: " + P1.Start().printVector() + Environment.NewLine);
+            PosP1 = P1.Position;
+
+
+            P2 = new PauellA2(_func, X0, Math.Pow(10, -8));
+            answers.Add("П2" + Environment.NewLine + "Минимум в точке: " + P2.Start().printVector() + Environment.NewLine);
+            PosP2 = P2.Position;
+
+
+            P3 = new PauellA3(_func, X0, Math.Pow(10, -8));
+            answers.Add("П3" + Environment.NewLine + "Минимум в точке: " + P3.Start().printVector() + Environment.NewLine);
+            PosP3 = P3.Position;
+
+            pictureBox1.Refresh();
+            PrintText();
+        }
+
+        private void RossenbrokStart()
+        {
+            Ros = new Rossen(_func, X0);
+            answers.Add("Розенброк " + Environment.NewLine + "Минимум в точке: " + Ros.Start().printVector() + Environment.NewLine);
+            PosRossen = Ros.Position;
+
+            pictureBox1.Refresh();
+            PrintText();
+        }
+
+        private void HDStart()
+        {
+
+            huk = new Huck(_func, X0, Math.Pow(10, -8));
+            answers.Add("ХД " + Environment.NewLine + "Минимум в точке: " + huk.Start().printVector() + Environment.NewLine);
+            PosHuck = huk.Position;
+
+            pictureBox1.Refresh();
+            PrintText();
+        }
+
+        private void PrintText()
+        {
+            textBox3.Text = "";
+
+            for (int i = 0; i < answers.Count; i++)
             {
-                P1 = new PauellA1(_func, X0, Math.Pow(10, -8));
-                textBox3.Text += "П1" + Environment.NewLine + "Минимум в точке: " + P1.Start().printVector() + Environment.NewLine;
-                PosP1 = P1.Position;
-            }
-            if (checkBox2.Checked == true)
-            {
-                P2 = new PauellA2(_func, X0, Math.Pow(10, -8));
-                textBox3.Text += "П2" + Environment.NewLine + "Минимум в точке: " + P2.Start().printVector() + Environment.NewLine;
-                PosP2 = P2.Position;
-            }
-            if (checkBox3.Checked == true)
-            {
-                P3 = new PauellA3(_func, X0, Math.Pow(10, -8));
-                textBox3.Text += "П3" + Environment.NewLine + "Минимум в точке: " + P3.Start().printVector() + Environment.NewLine;
-                PosP3 = P3.Position;
-            }
-            if (checkBox5.Checked == true)
-            {
-                Ros = new Rossen(_func, X0);
-                textBox3.Text += "Розенброк " + Environment.NewLine + "Минимум в точке: " + Ros.Start().printVector() + Environment.NewLine;
-                PosRossen = Ros.Position;
+                textBox3.Text += answers[i];
             }
         }
 
@@ -185,8 +251,20 @@ namespace Pauell
                     PrintVector(g, System.Drawing.Pens.DarkOrange, PosRossen[i], PosRossen[i + 1]);
                 }
             }
-        }
 
+            if ((PosHuck != null) && (checkBox8.Checked))
+            {
+                if (checkBox6.Checked == true)
+                {
+                    g.FillRectangle(Brushes.Black, Convert.ToSingle(w + 50 * PosHuck[0].ch[0]), Convert.ToSingle(h - 50 * PosHuck[0].ch[1]), 3, 3);
+                    g.FillRectangle(Brushes.Black, Convert.ToSingle(w + 50 * PosHuck.Last().ch[0]), Convert.ToSingle(h - 50 * PosHuck.Last().ch[1]), 3, 3);
+                }
+                for (int i = 0; i < PosHuck.Count - 1; i++)
+                {
+                    PrintVector(g, System.Drawing.Pens.DarkKhaki, PosHuck[i], PosHuck[i + 1]);
+                }
+            }
+        }
         private void PrintVector(Graphics e, System.Drawing.Pen p, Vector v1, Vector v2)
         {
             double w, h;
@@ -205,12 +283,10 @@ namespace Pauell
             e.DrawLine(p, a1, b1, a2, b2);
             if(checkBox7.Checked==true) e.FillRectangle(Brushes.Black, a2, b2, 3, 3);
         }
-
         private void checkBox4_CheckedChanged(object sender, EventArgs e)
         {
             pictureBox1.Refresh();
         }
-
         private void label3_Click(object sender, EventArgs e)
         {
             string _func;
@@ -221,38 +297,35 @@ namespace Pauell
 
             int count = Convert.ToInt32(tempParse.CheckParse(_func));
         }
-
         private void Form1_ClientSizeChanged(object sender, EventArgs e)
         {
             pictureBox1.Refresh();
         }
-
         private void checkBox6_CheckedChanged(object sender, EventArgs e)
         {
             pictureBox1.Refresh();
         }
-
         private void checkBox7_CheckedChanged(object sender, EventArgs e)
         {
             pictureBox1.Refresh();
         }
-
         private void checkBox5_CheckedChanged(object sender, EventArgs e)
         {
             pictureBox1.Refresh();
         }
-
         private void checkBox1_CheckedChanged(object sender, EventArgs e)
         {
             pictureBox1.Refresh();
         }
-
         private void checkBox2_CheckedChanged(object sender, EventArgs e)
         {
             pictureBox1.Refresh();
         }
-
         private void checkBox3_CheckedChanged(object sender, EventArgs e)
+        {
+            pictureBox1.Refresh();
+        }
+        private void checkBox8_CheckedChanged(object sender, EventArgs e)
         {
             pictureBox1.Refresh();
         }

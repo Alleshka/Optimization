@@ -19,8 +19,7 @@ namespace lab5
 
             Parser temp = new Parser();
 
-            Paul1_A1_ P1;
-            Paul2_A2_ P;
+            Huck h;
 
             do
             {
@@ -37,17 +36,12 @@ namespace lab5
                     x[i] = Convert.ToDouble(Console.ReadLine());
                 }
 
-                P1 = new Paul1_A1_(func, new Vector(x), Math.Pow(10, -5));
-                P = new Paul2_A2_(func, new Vector(x), Math.Pow(10, -5));
-
+                h = new Huck(func, new Vector(x), Math.Pow(10, -8));
                 Vector answ;
 
+                answ = h.Start();
 
-                answ = P1.Start();
-                Console.WriteLine("Паул1: минимум в точке " + answ.printVector());
-
-                answ = P.Start();
-                Console.WriteLine("Паул2: инимум в точке " + answ.printVector());
+                Console.WriteLine("Min : " + answ.printVector());
 
             } while (true);
 

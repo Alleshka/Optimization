@@ -52,6 +52,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="hhh.cs" />
     <Compile Include="Paul1%28A1%29.cs" />
     <Compile Include="Paul2%28A2%29.cs" />
     <Compile Include="Program.cs" />

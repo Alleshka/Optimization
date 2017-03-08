@@ -61,6 +61,7 @@
     <Compile Include="Form1.Designer.cs">
       <DependentUpon>Form1.cs</DependentUpon>
     </Compile>
+    <Compile Include="Huck.cs" />
     <Compile Include="PauellA1.cs" />
     <Compile Include="PauellA2.cs" />
     <Compile Include="PauellA3.cs" />
