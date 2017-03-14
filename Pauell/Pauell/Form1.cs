@@ -43,6 +43,8 @@ namespace Pauell
             InitializeComponent();
             textBox1.Enabled = false;
             comboBox1.Enabled = true;
+
+            label4.Text = Convert.ToString(trackBar1.Value);
         }
 
         private void radioButton1_CheckedChanged(object sender, EventArgs e)
@@ -139,7 +141,7 @@ namespace Pauell
             answers.Add("П3" + Environment.NewLine + "Минимум в точке: " + P3.Start().printVector() + Environment.NewLine);
             PosP3 = P3.Position;
 
-            pictureBox1.Refresh();
+            //pictureBox1.Refresh();
             PrintText();
         }
 
@@ -149,7 +151,7 @@ namespace Pauell
             answers.Add("Розенброк " + Environment.NewLine + "Минимум в точке: " + Ros.Start().printVector() + Environment.NewLine);
             PosRossen = Ros.Position;
 
-            pictureBox1.Refresh();
+            //pictureBox1.Refresh();
             PrintText();
         }
 
@@ -160,7 +162,7 @@ namespace Pauell
             answers.Add("ХД " + Environment.NewLine + "Минимум в точке: " + huk.Start().printVector() + Environment.NewLine);
             PosHuck = huk.Position;
 
-            pictureBox1.Refresh();
+            //pictureBox1.Refresh();
             PrintText();
         }
 
@@ -172,11 +174,13 @@ namespace Pauell
             {
                 textBox3.Text += answers[i];
             }
+
+            pictureBox1.Refresh();
         }
 
         private void pictureBox1_Paint(object sender, PaintEventArgs e)
         {
-
+            float mash = trackBar1.Value;
 
             // Рисуем Оси
             Graphics g = e.Graphics;
@@ -193,9 +197,9 @@ namespace Pauell
 
             if (checkBox4.Checked == true)
             {
-                g.DrawLine(System.Drawing.Pens.Purple, w, h, w + 50, h - 50);
-                g.DrawLine(System.Drawing.Pens.Purple, w, h, w + 50, h);
-                g.DrawLine(System.Drawing.Pens.Purple, w, h, w, h - 50);
+                g.DrawLine(System.Drawing.Pens.Purple, w, h, w + mash, h - mash);
+                g.DrawLine(System.Drawing.Pens.Purple, w, h, w + mash, h);
+                g.DrawLine(System.Drawing.Pens.Purple, w, h, w, h - mash);
             }
 
             // Рисуем позиции
@@ -203,8 +207,8 @@ namespace Pauell
             {
                 if (checkBox6.Checked == true)
                 {
-                    g.FillRectangle(Brushes.Black, Convert.ToSingle(w + 50 * PosP1[0].ch[0]), Convert.ToSingle(h - 50 * PosP1[0].ch[1]), 3, 3);
-                    g.FillRectangle(Brushes.Black, Convert.ToSingle(w + 50 * PosP1.Last().ch[0]), Convert.ToSingle(h - 50 * PosP1.Last().ch[1]), 3, 3);
+                    g.FillRectangle(Brushes.Black, Convert.ToSingle(w + mash * PosP1[0].ch[0]), Convert.ToSingle(h - mash * PosP1[0].ch[1]), 3, 3);
+                    g.FillRectangle(Brushes.Black, Convert.ToSingle(w + mash * PosP1.Last().ch[0]), Convert.ToSingle(h - mash * PosP1.Last().ch[1]), 3, 3);
                 }
                 for (int i = 0; i < PosP1.Count - 1; i++)
                 {
@@ -217,8 +221,8 @@ namespace Pauell
             {
                 if (checkBox6.Checked == true)
                 {
-                    g.FillRectangle(Brushes.Black, Convert.ToSingle(w + 50 * PosP2[0].ch[0]), Convert.ToSingle(h - 50 * PosP2[0].ch[1]), 3, 3);
-                    g.FillRectangle(Brushes.Black, Convert.ToSingle(w + 50 * PosP2.Last().ch[0]), Convert.ToSingle(h - 50 * PosP2.Last().ch[1]), 3, 3);
+                    g.FillRectangle(Brushes.Black, Convert.ToSingle(w + mash * PosP2[0].ch[0]), Convert.ToSingle(h - mash * PosP2[0].ch[1]), 3, 3);
+                    g.FillRectangle(Brushes.Black, Convert.ToSingle(w + mash * PosP2.Last().ch[0]), Convert.ToSingle(h - mash * PosP2.Last().ch[1]), 3, 3);
                 }
                 for (int i = 0; i < PosP2.Count - 1; i++)
                 {
@@ -231,8 +235,8 @@ namespace Pauell
             {
                 if (checkBox6.Checked == true)
                 {
-                    g.FillRectangle(Brushes.Black, Convert.ToSingle(w + 50 * PosP3[0].ch[0]), Convert.ToSingle(h - 50 * PosP3[0].ch[1]), 5, 3);
-                    g.FillRectangle(Brushes.Black, Convert.ToSingle(w + 50 * PosP3.Last().ch[0]), Convert.ToSingle(h - 50 * PosP3.Last().ch[1]), 6, 3);
+                    g.FillRectangle(Brushes.Black, Convert.ToSingle(w + mash * PosP3[0].ch[0]), Convert.ToSingle(h - mash * PosP3[0].ch[1]), 5, 3);
+                    g.FillRectangle(Brushes.Black, Convert.ToSingle(w + mash * PosP3.Last().ch[0]), Convert.ToSingle(h - mash * PosP3.Last().ch[1]), 6, 3);
                 }
                 for (int i = 0; i < PosP3.Count - 1; i++)
                 {
@@ -243,8 +247,8 @@ namespace Pauell
             {
                 if (checkBox6.Checked == true)
                 {
-                    g.FillRectangle(Brushes.Black, Convert.ToSingle(w + 50 * PosRossen[0].ch[0]), Convert.ToSingle(h - 50 * PosRossen[0].ch[1]), 3, 3);
-                    g.FillRectangle(Brushes.Black, Convert.ToSingle(w + 50 * PosRossen.Last().ch[0]), Convert.ToSingle(h - 50 * PosRossen.Last().ch[1]), 3, 3);
+                    g.FillRectangle(Brushes.Black, Convert.ToSingle(w + mash * PosRossen[0].ch[0]), Convert.ToSingle(h - mash * PosRossen[0].ch[1]), 3, 3);
+                    g.FillRectangle(Brushes.Black, Convert.ToSingle(w + mash * PosRossen.Last().ch[0]), Convert.ToSingle(h - mash * PosRossen.Last().ch[1]), 3, 3);
                 }
                 for (int i = 0; i < PosRossen.Count - 1; i++)
                 {
@@ -256,8 +260,8 @@ namespace Pauell
             {
                 if (checkBox6.Checked == true)
                 {
-                    g.FillRectangle(Brushes.Black, Convert.ToSingle(w + 50 * PosHuck[0].ch[0]), Convert.ToSingle(h - 50 * PosHuck[0].ch[1]), 3, 3);
-                    g.FillRectangle(Brushes.Black, Convert.ToSingle(w + 50 * PosHuck.Last().ch[0]), Convert.ToSingle(h - 50 * PosHuck.Last().ch[1]), 3, 3);
+                    g.FillRectangle(Brushes.Black, Convert.ToSingle(w + mash * PosHuck[0].ch[0]), Convert.ToSingle(h - mash * PosHuck[0].ch[1]), 3, 3);
+                    g.FillRectangle(Brushes.Black, Convert.ToSingle(w + mash * PosHuck.Last().ch[0]), Convert.ToSingle(h - mash * PosHuck.Last().ch[1]), 3, 3);
                 }
                 for (int i = 0; i < PosHuck.Count - 1; i++)
                 {
@@ -267,6 +271,9 @@ namespace Pauell
         }
         private void PrintVector(Graphics e, System.Drawing.Pen p, Vector v1, Vector v2)
         {
+
+            float mash = trackBar1.Value;
+
             double w, h;
 
             // Центр
@@ -275,10 +282,10 @@ namespace Pauell
 
             float a1, b1, a2, b2;
 
-            a1 = Convert.ToSingle(w + v1.ch[0] * 50);
-            b1 = Convert.ToSingle(h - v1.ch[1] * 50);
-            a2 = Convert.ToSingle(w + v2.ch[0] * 50);
-            b2 = Convert.ToSingle(h - v2.ch[1] * 50);
+            a1 = Convert.ToSingle(w + v1.ch[0] * mash);
+            b1 = Convert.ToSingle(h - v1.ch[1] * mash);
+            a2 = Convert.ToSingle(w + v2.ch[0] * mash);
+            b2 = Convert.ToSingle(h - v2.ch[1] * mash);
 
             e.DrawLine(p, a1, b1, a2, b2);
             if(checkBox7.Checked==true) e.FillRectangle(Brushes.Black, a2, b2, 3, 3);
@@ -327,6 +334,12 @@ namespace Pauell
         }
         private void checkBox8_CheckedChanged(object sender, EventArgs e)
         {
+            pictureBox1.Refresh();
+        }
+
+        private void trackBar1_Scroll(object sender, EventArgs e)
+        {
+            label4.Text = Convert.ToString(trackBar1.Value);
             pictureBox1.Refresh();
         }
     }
