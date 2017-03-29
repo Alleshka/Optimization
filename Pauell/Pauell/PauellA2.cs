@@ -12,7 +12,24 @@ namespace Pauell
         private int count;
         private Vector _X0;
         private double _eps;
+        public int _count;
+        public Vector MinVector;
         public List<Vector> Position;
+
+        public string PrintAnswer()
+        {
+            string temp = "";
+
+            temp += "********************************************" + Environment.NewLine;
+            temp += "П2" + Environment.NewLine;
+            temp += "Минимум в точке: " + MinVector.printVector() + Environment.NewLine;
+            temp += "Количество итераций: " + _count + Environment.NewLine;
+            temp += "Количество точек: " + Position.Count + Environment.NewLine + Environment.NewLine;
+            temp += "********************************************" + Environment.NewLine;
+            temp += Environment.NewLine;
+
+            return temp;
+        }
 
         public PauellA2(string func, Vector X, double eps)
         {
@@ -25,8 +42,6 @@ namespace Pauell
 
             Position = new List<Vector>();
         }
-
-
         public Vector Start()
         {
             int k = 1;
@@ -73,10 +88,6 @@ namespace Pauell
 
                 Vector dk = curX - X2; // Находим вектор
 
-
-                //curX = X2;
-                //Position.Add(curX);
-
                 if (k >= this.count - 1)
                 {
 
@@ -86,6 +97,8 @@ namespace Pauell
                     curX = labs.Point(curX, alpha);
                     Position.Add(curX);
 
+                    this._count = k;
+                    MinVector = curX;
                     return curX;
                 }
                 else

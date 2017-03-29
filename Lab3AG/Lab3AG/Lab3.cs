@@ -44,31 +44,27 @@ namespace Lab3AG
             return Convert.ToDouble(pars.Parse(_func, temp.ch));
         }
 
-        private double dy(double alpha)
-        {
-            Vector temp = Point(alpha);
-            Vector G = new Vector(temp.ch.Count);
-            G.NullInit();
+         private double dy(double alpha)
+         {
+             Vector temp = Point(alpha);
+             Vector G = new Vector(temp.ch.Count);
+             G.NullInit();
 
-            Parser prs = new Parser();
+             Parser prs = new Parser();
 
-            /* for (int i = 0; i < temp.ch.Count; i++)
-             {
-                 //Console.WriteLine("Проблемы начались на " + i + "ой итерации с " + temp.printVector());
+              for (int i = 0; i < temp.ch.Count; i++)
+              {
+                  G.ch[i] = prs.DiffFunc(_func, temp.ch, i);
+              }
 
-                 G.ch[i] = prs.DiffFunc(_func, temp.ch, i);
+            
+             //Console.WriteLine("Значения производных: " + G.printVector());
 
-                 //Console.WriteLine("G = " + G.printVector());
-             }*/
+             return temp * _P;
+         }
 
-            G = Grad(temp);
 
-            //Console.WriteLine("Значения производных: " + G.printVector());
-
-            return temp * _P;
-        }
-
-        private Vector Grad(Vector X)
+     /*   private Vector Grad(Vector X)
         {
             double h = this._eps;
             double[] ch = new double[X.ch.Count];
@@ -79,8 +75,7 @@ namespace Lab3AG
             }
 
             return new Vector(ch);
-        }
-
+        }*/
 
         private Vector Sven1()
         {
@@ -116,8 +111,8 @@ namespace Lab3AG
         }
         private Vector Sven2()
         {
-            double alpha = Math.Pow(10, -3);
-            double h = Math.Pow(10, -3);
+            double alpha = Math.Pow(10, -2);
+            double h = Math.Pow(10, -2);
             int k = 0;
             double df;
 
@@ -148,33 +143,6 @@ namespace Lab3AG
 
             return new Vector(ch);
         }
-        private double balcan(Vector ch)
-        {
-            double a = ch.ch[0]; double b = ch.ch[1];
-
-            double c;
-
-            int k = 1;
-
-            do
-            {
-                //Console.WriteLine("Бальцан, итерация " + k);
-                //Console.WriteLine("Начальные границы [" + a + "; " + b + "]");
-                c = (a + b) / 2;
-
-                if (dy(c) > 0) b = c;
-                else a = c;
-
-                k++;
-                //Console.WriteLine("Конечные границы [" + a + "; " + b + "]");
-                if (k >= this._maxCount) break;
-
-            } while (Math.Abs(b - a) >= this._eps);
-
-            //Console.WriteLine("Вернули: конечные границы[" + a + "; " + b + "]");
-            //Console.WriteLine((a + b) / 2);
-            return (a + b) / 2;
-        }
 
         private double zs2(Vector ch)
         {
@@ -189,14 +157,12 @@ namespace Lab3AG
             k = 1;
             double l = a + tau2 * len;
             double m = a + tau * len;
-            // cout<<"l = "<<l<<"; m = "<<m<<endl;
 
             do
             {
 
                 if (y(l) < y(m))
                 {
-                    //a = a;
                     b = m;
                     m = l;
                     len = Math.Abs(a - b);
@@ -210,10 +176,6 @@ namespace Lab3AG
                     m = a + tau * len;
                 }
 
-                /*Console.WriteLine("L = " + l + " M = " + m);
-                Console.WriteLine(y(tempX, l));
-                Console.WriteLine(y(tempX, m));*/
-
                 k++;
 
                 if (k >= _maxCount) break;
@@ -221,9 +183,14 @@ namespace Lab3AG
             while ((b - a) >= _eps);
 
             return (a + b) / 2;
+
+            double[] temp = new double[2];
+            temp[0] = a;
+            temp[1] = b;
+            
+           // return new Vector(temp);
         }
-
-
+       
         public double Start(string func, Vector X0, Vector P, double eps)
         {
             this._func = func;         
@@ -236,13 +203,8 @@ namespace Lab3AG
             Parser temp = new Parser();
             this._countVar = temp.CheckParse(_func);
 
-            //Console.WriteLine("Начали Свен1");
-            Vector ch = Sven1();
-            //Console.WriteLine("Закончили свен 1. Границы: " + ch.printVector());
-
-            //Console.WriteLine("Начали бальцана");
+            Vector ch = Sven1();      
             double min = zs2(ch);
-            //Console.WriteLine("Конец бальцана");
 
             return min;
         }

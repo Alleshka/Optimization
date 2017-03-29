@@ -10,6 +10,7 @@ using System.Threading;
 using System.Windows.Forms;
 using ParserAG;
 using MartixVectorAG;
+using System.IO;
 
 namespace Pauell
 {
@@ -128,17 +129,17 @@ namespace Pauell
         private void PaulsStart()
         {
             P1 = new PauellA1(_func, X0, Math.Pow(10, -8));
-            answers.Add("П1" + Environment.NewLine + "Минимум в точке: " + P1.Start().printVector() + Environment.NewLine);
+            P1.Start(); answers.Add(P1.PrintAnswer());
             PosP1 = P1.Position;
 
 
             P2 = new PauellA2(_func, X0, Math.Pow(10, -8));
-            answers.Add("П2" + Environment.NewLine + "Минимум в точке: " + P2.Start().printVector() + Environment.NewLine);
+            P2.Start(); answers.Add(P2.PrintAnswer());
             PosP2 = P2.Position;
 
 
             P3 = new PauellA3(_func, X0, Math.Pow(10, -8));
-            answers.Add("П3" + Environment.NewLine + "Минимум в точке: " + P3.Start().printVector() + Environment.NewLine);
+            P3.Start(); answers.Add(P3.PrintAnswer());
             PosP3 = P3.Position;
 
             //pictureBox1.Refresh();
@@ -148,21 +149,19 @@ namespace Pauell
         private void RossenbrokStart()
         {
             Ros = new Rossen(_func, X0);
-            answers.Add("Розенброк " + Environment.NewLine + "Минимум в точке: " + Ros.Start().printVector() + Environment.NewLine);
+            Ros.Start(); answers.Add(Ros.PrintAnswer());            
             PosRossen = Ros.Position;
 
-            //pictureBox1.Refresh();
             PrintText();
         }
 
         private void HDStart()
         {
-
             huk = new Huck(_func, X0, Math.Pow(10, -8));
-            answers.Add("ХД " + Environment.NewLine + "Минимум в точке: " + huk.Start().printVector() + Environment.NewLine);
+            huk.Start();
+            answers.Add(huk.PrintAnswer());
             PosHuck = huk.Position;
 
-            //pictureBox1.Refresh();
             PrintText();
         }
 
@@ -341,6 +340,25 @@ namespace Pauell
         {
             label4.Text = Convert.ToString(trackBar1.Value);
             pictureBox1.Refresh();
+        }
+
+        private void сделатьОтчётToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            StreamWriter temp = new StreamWriter(File.Open("tmptext", FileMode.Append));
+
+            for (int i = 0; i < comboBox1.Items.Count; i++)
+            {
+                comboBox1.SelectedIndex = i;
+
+                Start();
+
+                temp.WriteLine("Func = " + comboBox1.Text);
+                temp.WriteLine(textBox3.Text);
+
+                temp.WriteLine("________________________________________" + Environment.NewLine + Environment.NewLine);
+            }
+
+            temp.Close();
         }
     }
 }

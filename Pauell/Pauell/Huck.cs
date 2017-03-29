@@ -15,10 +15,28 @@ namespace Pauell
         private int count;
         private Vector _X0;
         private double _eps;
+
+        public int _count;
         public List<Vector> Position;
+        public Vector MinVector;
 
         private double h = 0.1;
         private double b = 10;
+
+        public string PrintAnswer()
+        {
+            string temp = "";
+
+            temp += "********************************************" + Environment.NewLine;
+            temp += "ХД" + Environment.NewLine;
+            temp += "Минимум в точке: " + MinVector.printVector() + Environment.NewLine;
+            temp += "Количество итераций: " + _count + Environment.NewLine;
+            temp += "Количество точек: " + Position.Count + Environment.NewLine + Environment.NewLine;
+            temp += "********************************************" + Environment.NewLine;
+            temp += Environment.NewLine;
+
+            return temp;
+        }
 
         public Huck(string f, Vector x, double eps)
         {
@@ -44,6 +62,8 @@ namespace Pauell
             Vector X3;
             Vector X4;
 
+            int k = 1;
+
             Position.Add(X1);
 
             do
@@ -62,7 +82,7 @@ namespace Pauell
                         Position.Add(X1);
 
                         X4 = IP(X3);
-
+                        k++;
                         if (Convert.ToDouble(temp.Parse(_func, X4.ch)) < Convert.ToDouble(temp.Parse(_func, X2.ch)))
                         {
                             X2 = X4;
@@ -80,9 +100,11 @@ namespace Pauell
                     h /= b;
                     if (h < this._eps) break;
                 }
-
+                k++;
             } while (true);
 
+            _count = k;
+            MinVector = X1;
             return X1;
         }
 
@@ -124,11 +146,12 @@ namespace Pauell
                     }
                     else
                     {
-                        tempX.ch[i] += 2 * h; // Возвращаемся в предыдущую точку
+                        tempX.ch[i] += h; // Возвращаемся в предыдущую точку
                         tempFx = Fx;
                     }
                 }
             }
+
 
             return X; // Возвращаем лучшую в области точку
         }

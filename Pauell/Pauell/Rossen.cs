@@ -13,10 +13,27 @@ namespace Pauell
     {
         private string _func;
         private int _count;
+        public int _countIter;
+        public Vector MinVector;
         public List<Vector> Position;
 
         private double _eps;
         private Vector _X0;
+
+        public string PrintAnswer()
+        {
+            string temp = "";
+
+            temp += "********************************************" + Environment.NewLine;
+            temp += "Розенброк" + Environment.NewLine;
+            temp += "Минимум в точке: " + MinVector.printVector() + Environment.NewLine;
+            temp += "Количество итераций: " + _count + Environment.NewLine;
+            temp += "Количество точек: " + Position.Count + Environment.NewLine + Environment.NewLine;
+            temp += "********************************************" + Environment.NewLine;
+            temp += Environment.NewLine;
+
+            return temp;
+        }
 
         public Rossen(string func, Vector x)
         {
@@ -94,7 +111,7 @@ namespace Pauell
 
                 //Console.ReadLine();
 
-                if (curX.Norm() <= this._eps) break;
+                if (alpha.Norm() <= this._eps) break;
                 else
                 {
                     for (int i = 0; i < this._count; i++)
@@ -112,6 +129,8 @@ namespace Pauell
                             A[i] = tempV;
                         }
 
+
+
                         if (i == 0) B[i] = A[i];
                         else
                         {
@@ -125,20 +144,18 @@ namespace Pauell
 
                         d[i] = B[i];
                         d[i].Normilize();
+
+                        P[i] = d[i];
                     }
+
+                    _X0 = curX;
+
+                    count++; if (count >= 35) break;
                 }
-
-                for (int i = 0; i < this._count; i++)
-                {
-                    P[i] = d[i];
-                }
-
-                _X0 = curX;
-
-                count++; if (count >= 15) break;
-
             } while (true);
 
+            MinVector = this._X0;
+            _count = count;
             return this._X0;
         }
     }

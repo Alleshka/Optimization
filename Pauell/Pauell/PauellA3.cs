@@ -15,7 +15,24 @@ namespace Pauell
         private int count;
         private Vector _X0;
         private double _eps;
+        public int _count;
+        public Vector MinVector;
         public List<Vector> Position;
+
+        public string PrintAnswer()
+        {
+            string temp = "";
+
+            temp += "********************************************" + Environment.NewLine;
+            temp += "П3" + Environment.NewLine;
+            temp += "Минимум в точке: " + MinVector.printVector() + Environment.NewLine;
+            temp += "Количество итераций: " + _count + Environment.NewLine;
+            temp += "Количество точек: " + Position.Count + Environment.NewLine + Environment.NewLine;
+            temp += "********************************************" + Environment.NewLine;
+            temp += Environment.NewLine;
+
+            return temp;
+        }
 
         public PauellA3(string func, Vector X, double eps)
         {
@@ -124,6 +141,8 @@ namespace Pauell
                 }
             }
 
+            this._count = k;
+            this.MinVector = curX;
             return curX;
         }
 

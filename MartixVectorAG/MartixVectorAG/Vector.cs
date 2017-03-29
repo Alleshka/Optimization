@@ -141,9 +141,9 @@ namespace MartixVectorAG
 
             for (int i = 0; i < ch.Count; i++)
             {
-                temp += ch[i] + "; ";
+                temp += Math.Round(ch[i], 5) + "; ";
             }
-            temp += "); " + Environment.NewLine;
+            temp += "); ";
 
             return temp;
         }
