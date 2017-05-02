@@ -9,17 +9,17 @@ namespace GenAlgV1
 {
     public enum TypeCode { IntCode, RealCode }
 
-
     // Особь
     public class Person
     {
-        public double Fitness; // Приспособленность функции
+        private double Fitness; // Приспособленность функции
 
-        public List<double> _numbers; // Параметры
-        public List<string> _codeNumbers; // Закодированное число
+        private List<double> _numbers; // Параметры
+        private List<string> _codeNumbers; // Закодированное число
 
         public TypeCode _type; // Тип кодирования данной особи
 
+        // Выделяет память. Просто так
         public Person()
         {
             _numbers = new List<double>();
@@ -51,20 +51,20 @@ namespace GenAlgV1
         /// <param name="numbers">Последовательность цифирок</param>
         public void SetNumber(List<double> numbers)
         {
-            _type = TypeCode.RealCode;
+            _type = TypeCode.RealCode; // Задаём тип кодировки (хз зачем)
 
-            SetN(numbers);
-            RealCode();
+            SetN(numbers); // Запоминаем аргументы
+            RealCode(); // Вещественное кодирование
         }
         /// <summary>
         /// Вещественное кодирование
         /// </summary>
         private void RealCode()
         {
-            _codeNumbers = new List<string>();
+            _codeNumbers = new List<string>(); // Выделяем память
             foreach (double t in _numbers)
             {
-                _codeNumbers.Add(Convert.ToString(t));
+                _codeNumbers.Add(Convert.ToString(t)); // Копируем в строку
             }
         }
 
@@ -89,34 +89,38 @@ namespace GenAlgV1
         /// <param name="numbers">Цифирки</param>
         public void SetNumber(double min, double max, int count, List<double> numbers)
         {
-            List<double> args = new List<double>(); args.Add(min); args.Add(max); args.Add(count);
-            SetNumber(args, numbers);
+            List<double> args = new List<double>(); args.Add(min); args.Add(max); args.Add(count); // Запихиваем аргументы в список
+            SetNumber(args, numbers); // Вызываем предыдущий метод
         }
 
+        // Целочисленное кодирование
         private void IntCode(List<double> args)
         {
             _codeNumbers = new List<string>();
             foreach (double t in _numbers)
             {
-                _codeNumbers.Add(ActionCode(args, t));
+                _codeNumbers.Add(ActionCode(args, t)); // Действуем
             }
         }
         private string ActionCode(List<double> args, double t)
         {
+            // Достаём аргументы
             double min = args[0];
             double max = args[1];
             int count = Convert.ToInt32(args[2]);
 
             string temp = "";
 
-            int g = (int)((t - min) * (Math.Pow(2, count) - 1) / (max - min));
+            int g = (int)((t - min) * (Math.Pow(2, count) - 1) / (max - min)); // Вычисляем штуку
 
+            // Переводим в двоичный код
             for (int i = 0; i < count; i++)
             {
                 temp += g - (int)(g / 2) * 2;
                 g = (int)g / 2;
             }
-            return temp;
+
+            return temp; // Возвращаем двоичный код аргумента
         }
 
         /// <summary>
@@ -127,8 +131,8 @@ namespace GenAlgV1
         {
             _type = TypeCode.RealCode;
 
-            SetC(codeNumb);
-            RealDeCode();          
+            SetC(codeNumb); // Запоминаем закодированные цифирки
+            RealDeCode();  // Достаём
         }
         private void RealDeCode()
         {
@@ -189,6 +193,46 @@ namespace GenAlgV1
             Parser temp = new Parser();
 
             this.Fitness = Convert.ToDouble(temp.Parse(func, _numbers));
+        }
+
+        public List<double> GetArgs()
+        {
+            return _numbers;
+        }
+        public List<string> GetCodeArtgs()
+        {
+            return _codeNumbers;
+        }
+        public double GetFitness()
+        {
+            return Fitness;
+        }
+
+
+        public void Inverse(int Arg, int Bit)
+        {
+            List<string> newString = new List<string>();
+
+            for (int i = 0; i < _codeNumbers.Count; i++)
+            {
+                if (i != Arg) newString.Add(_codeNumbers[i]); // До текущего гена
+                else // Дошли до нужного гена
+                {
+                    string temp = "";
+                    for (int j = 0; j < _codeNumbers[i].Length; j++)
+                    {
+                        if (i != Bit) temp += _codeNumbers[i][j];
+                        else
+                        {
+                            if (_codeNumbers[i][j] == '1') temp += "0";
+                            else temp += "1";
+                        }
+                    }
+                    newString.Add(temp);
+                }
+            }
+
+            SetCodeNumber(newString); // Сохраняем строку
         }
     }
 }

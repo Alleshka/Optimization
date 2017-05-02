@@ -29,92 +29,71 @@ namespace GenAlgV1
             InitializeComponent();
         }
 
-        private void StartCode_Click(object sender, RoutedEventArgs e)
+        private void Button_Click(object sender, RoutedEventArgs e)
         {
-            Person temp = new Person();
-            List<double> doubles = new List<double>();
-
-            for (int i = 0; i < ListReal.Items.Count; i++)
+            string Functon = "";
+            // Если выбран ручной ввод функции
+            if (ManualFuncRadio.IsChecked == true)
             {
-                doubles.Add(Convert.ToDouble(ListReal.Items[i]));
+                Functon = ManualFuncText.Text;
+            }
+            if (SaveFuncRadio.IsChecked == true)
+            {
+                Functon = SaveFuncCombo.Text;
             }
 
-            RealNum = doubles;
+            List<double> args = new List<double>(); // Аргументы границы/кодирования
+            args.Add(Convert.ToDouble(MinText.Text)); args.Add(Convert.ToDouble(MaxText.Text)); // Имеем границы
 
-            if (TypeCodeCheck.IsChecked == false) temp.SetNumber(RealNum);
-            else
+            // Если целочисленное кодирование
+            if (IntCodeCheck.IsChecked == true)
             {
-                List<double> args = new List<double>();
-                args.Add(Convert.ToDouble(Min.Text));
-                args.Add(Convert.ToDouble(Max.Text));
-                args.Add(Convert.ToDouble(Count.Text));
-
-                temp.SetNumber(args, RealNum);
+                args.Add(Convert.ToDouble(CountBitText.Text));
             }
 
-            CodeNum = temp._codeNumbers;
+            GenAlgWorck temp = new GenAlgWorck();
 
-            RefreshList();
-        }
-
-        private void RefreshList()
-        {
-            ListReal.Items.Clear();
-            foreach (double t in RealNum)
+            // Если целочисленное кодирование
+            if (args.Count == 3)
             {
-                ListReal.Items.Add(t);
+                temp.SetGr(args);
+            }
+            else // Если вещественное
+            {
+                temp.SetGr(args[0], args[1]);
             }
 
+            temp.SetFunc(Functon);
 
-            ListCode.Items.Clear();
-            foreach (string s in CodeNum)
+            List<double> argsgen = new List<double>(); // Параметры ГА
+            argsgen.Add(Convert.ToDouble(CountPersonText.Text)); // Размер популяции
+            argsgen.Add(Convert.ToDouble(CountIterText.Text)); // Количество итераци
+            argsgen.Add(Convert.ToDouble(TournirText.Text)); // Турнир
+            argsgen.Add(Convert.ToDouble(ChanceCrossText.Text)); // Шанс скрещивания
+            argsgen.Add(Convert.ToDouble(ChanceMutationText.Text)); // Шанс мутации
+            argsgen.Add(Convert.ToDouble(ChanceInversText.Text)); // Шанс инверсии
+            argsgen.Add(Math.Pow(10, Convert.ToDouble(SpikeEps.Text))); // Разность
+            // Итераций для вымирания
+            if (SpikeCheckBox.IsChecked == true)
             {
-                ListCode.Items.Add(s);
+                argsgen.Add(Convert.ToDouble(CpikeCount.Text));
             }
-        }
+            else argsgen.Add(argsgen[0]*2);
 
-        private void Add_Click(object sender, RoutedEventArgs e)
-        {
 
-            RealNum.Add(Convert.ToDouble(Number.Text));
-            Number.Text = "";
-            RefreshList();
-        }
 
-        private void ClearButton_Click(object sender, RoutedEventArgs e)
-        {
-            RealNum = new List<double>();
-            CodeNum = new List<string>();
+            temp.SetAlgPar(argsgen);
+            AnswerClass answer = temp.StartWorck();
 
-            RefreshList();
-        }
-
-        private void DeCode_Click(object sender, RoutedEventArgs e)
-        {
-            Person temp = new Person();
-            List<string> doubles = new List<string>();
-
-            for (int i = 0; i < ListCode.Items.Count; i++)
+            PointMinText.Text = "";
+            foreach (double k in answer.minPoint)
             {
-                doubles.Add(Convert.ToString(ListCode.Items[i]));
+                PointMinText.Text += k + ";";
             }
+            FuncMinText.Text = "F = " + answer.MinF;
 
-            CodeNum = doubles;
-
-            if (TypeCodeCheck.IsChecked == false) temp.SetCodeNumber(CodeNum);
-            else
-            {
-                List<double> args = new List<double>();
-                args.Add(Convert.ToDouble(Min.Text));
-                args.Add(Convert.ToDouble(Max.Text));
-                args.Add(Convert.ToDouble(Count.Text));
-
-                temp.SetCodeNumber(args, CodeNum);
-            }
-
-            RealNum = temp._numbers;
-
-            RefreshList();
+            ArgLog.Text = answer.log[Convert.ToInt32(NumIter.Text)].RealLog;
+            CodeLog.Text = answer.log[Convert.ToInt32(NumIter.Text)].CodeLog;
         }
     }
 }
