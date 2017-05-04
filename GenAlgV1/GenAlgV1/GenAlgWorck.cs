@@ -4,6 +4,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using ParserAG;
+using System.Windows;
+using System.Windows.Controls;
+using System.Windows.Media;
+using System.Threading;
 
 namespace GenAlgV1
 {
@@ -18,13 +22,12 @@ namespace GenAlgV1
 
         public Population _temp;
 
-        public LogClass(Population temp, bool order)
+        public LogClass(Population temp)
         {
             MinF = GetMinValue(temp);
             Average = GetAverageValue(temp);
 
             SetPopul(temp);
-            PrintLog(temp, order);
         }
 
         private double GetMinValue(Population temp)
@@ -41,12 +44,12 @@ namespace GenAlgV1
             return num / temp._population.Count;
         }
 
-        public void PrintLog(Population temp, bool order)
+        public void PrintLog(bool order, int around)
         {
             IEnumerable<Person> temp2;
 
-            if (order == true) temp2 = temp._population.OrderBy(x => x.GetFitness());
-            else temp2 = temp._population;
+            if (order == true) temp2 = _temp._population.OrderBy(x => x.GetFitness());
+            else temp2 = _temp._population;
 
             RealLog = "";
             CodeLog = "";
@@ -56,18 +59,18 @@ namespace GenAlgV1
                 RealLog += "(";
                 foreach (double k in t.GetArgs())
                 {
-                    RealLog += k + "; ";
+                    RealLog += Math.Round(k, around) + "; ";
                 }
-                RealLog += "); "; RealLog += "F = " + t.GetFitness();
+                RealLog += "); "; RealLog += "F = " + Math.Round(t.GetFitness(), around);
                 RealLog += Environment.NewLine;
 
                 CodeLog += "(";
                 foreach (string k in t.GetCodeArtgs())
                 {
-                    RealLog += k + "; ";
+                    CodeLog += k + "; ";
                 }
-                RealLog += "); "; RealLog += "F = " + t.GetFitness();
-                RealLog += Environment.NewLine;
+                CodeLog += "); "; CodeLog += "F = " + Math.Round(t.GetFitness(), around);
+                CodeLog += Environment.NewLine;
             }
         }
 
@@ -93,9 +96,9 @@ namespace GenAlgV1
             minPoint = new List<double>();
         }
 
-        public void AddLog(Population k, bool or)
+        public void AddLog(Population k)
         {
-            log.Add(new LogClass(k, or));
+            log.Add(new LogClass(k));
         }
         public void SetAnswer(List<double> min, double f)
         {
@@ -128,6 +131,16 @@ namespace GenAlgV1
         private double _chanceMutation; // Шанс мутации
         private double _chanceInvers; // Шанс инверсии
 
+        // Популяционный всплеск
+        private double _eps;
+        private double _counteps;
+        private double _maxcounteps;
+
+        // Уплотнение
+        private int _compactSize; // На сколько уплотняем сетку
+        private int _compactIter; // Как часто
+        private int _countCompact;
+
         // Для целочисленного кодирования
         private List<double> _codeArgs;
 
@@ -136,9 +149,13 @@ namespace GenAlgV1
         private double _max;
         private int _count;
 
-        private double _eps;
-        private double _counteps;
-        private double _maxcounteps;
+        private bool AlernativeExit;
+
+        public int GetNumb()
+        {
+            if ((answ != null)&&(answ.log!=null)) return answ.log.Count;
+            else return 0;
+        }
 
         /// <summary>
         /// Создаёт класс, инициализирует данные по умолчанию
@@ -159,7 +176,7 @@ namespace GenAlgV1
             _population = new Population();
             T = new Random();
 
-            SetAlgPar(50, 50, 2, 0.8, 0.2, 0.2, Math.Pow(10, -7), 5); // Инициализируем параметры алгоритма
+            SetAlgPar(50, 50, 2, 0.8, 0.2, 0.2, Math.Pow(10, -7), 5, 50, 4, 0); // Инициализируем параметры алгоритма
             SetGr(-5, -5); // Инициализируем границы и тип кодирования
         }
 
@@ -169,9 +186,9 @@ namespace GenAlgV1
         /// <param name="temp">Характеристики</param>
         public void SetAlgPar(List<double> temp)
         {
-            SetAlgPar(Convert.ToInt32(temp[0]), Convert.ToInt32(temp[1]), Convert.ToInt32(temp[2]), temp[3], temp[4], temp[5], temp[6], Convert.ToInt32(temp[7]));
+            SetAlgPar(Convert.ToInt32(temp[0]), Convert.ToInt32(temp[1]), Convert.ToInt32(temp[2]), temp[3], temp[4], temp[5], temp[6], Convert.ToInt32(temp[7]), Convert.ToInt32(temp[8]), Convert.ToInt32(temp[9]), temp[10]);
         }
-        public void SetAlgPar(int countPopulation, int maxiter, int tourn, double chcross, double chmut, double chinvers, double eps, int maxcount)
+        public void SetAlgPar(int countPopulation, int maxiter, int tourn, double chcross, double chmut, double chinvers, double eps, int maxcount, int compactiter, int compactsize, double altex)
         {
             this._countPopulation = Convert.ToInt32(countPopulation);
             this._countMaxIter = Convert.ToInt32(maxiter);
@@ -184,6 +201,12 @@ namespace GenAlgV1
             this._eps = eps;
             this._maxcounteps = maxcount;
             this._counteps = 0;
+
+            this._compactIter = compactiter;
+            this._compactSize = compactsize;
+
+            if (altex != 0) this.AlernativeExit = true;
+            else AlernativeExit = false;
         }
 
         public void SetGr(double min, double max)
@@ -196,11 +219,13 @@ namespace GenAlgV1
             _codeArgs.Add(_min);
             _codeArgs.Add(_max);
         }
+
         public void SetGr(List<double> args)
         {
-            _type = TypeCode.IntCode;
+
             _count = Convert.ToInt32(args[2]);
             SetGr(args[0], args[1]);
+            _type = TypeCode.IntCode;
 
             _codeArgs = new List<double>();
             foreach (double k in args)
@@ -225,6 +250,12 @@ namespace GenAlgV1
             InitRandPopulaton(); // Собираем популяцию
 
             Population temp = _population;
+
+            answ.AddLog(temp);
+
+            _counteps = 0;
+            _countCompact = 0;
+
             for (int i = 0; i < _countMaxIter; i++)
             {
                 temp = _population;
@@ -233,17 +264,31 @@ namespace GenAlgV1
                 temp = Inverse(temp);
                 double a = temp._population.OrderBy(x => x.GetFitness()).First().GetFitness(); // Наименьшее значение
                 double b = temp._population.OrderByDescending(x => x.GetFitness()).First().GetFitness(); // Наибольшее значение
+
                 if (Math.Abs(a - b) <= _eps) _counteps += 1;
+                _countCompact += 1;
 
                 if (_counteps >= _maxcounteps)
                 {
                     _counteps = 0;
                     temp = Spike(temp);
                 }
-
+                if (_countCompact >= _compactIter)
+                {
+                    temp = Compact(temp); // Уплотняем сетку
+                    _countCompact = 0;
+                }
                 _population = temp;
+                answ.AddLog(temp);
 
-                answ.AddLog(_population, true);
+                if (AlernativeExit == true)
+                {
+                    Person k = temp._population.OrderBy(x => x.GetFitness()).First();
+                    if ((_Parse.DiffFunc(_func, k.GetArgs(), 0) <= Math.Pow(10, -5)) && (_Parse.DiffFunc(_func, k.GetArgs(), 1) <= Math.Pow(10, -5)))
+                    {
+                        break;
+                    }
+                }
             }
 
             _population.CalcFitnessAll(_func);
@@ -314,20 +359,20 @@ namespace GenAlgV1
                     string sa1 = "", sa2 = "";
                     for (int i = 0; i < _count; i++)
                     {
-                        // До загаданного гена идём нормально
+                        // До загаданного бита идём нормально
                         if (i < numBit)
                         {
-                            sa1 += Start.GetPerson(p1).GetCodeArtgs()[i][i];
-                            sa2 += Start.GetPerson(p2).GetCodeArtgs()[i][i];
+                            sa1 += Start.GetPerson(p1).GetCodeArtgs()[numGen][i];
+                            sa2 += Start.GetPerson(p2).GetCodeArtgs()[numGen][i];
                         }
                         else // После этого меняем
                         {
-                            sa2 += Start.GetPerson(p1).GetCodeArtgs()[i][i];
-                            sa1 += Start.GetPerson(p2).GetCodeArtgs()[i][i];
+                            sa2 += Start.GetPerson(p1).GetCodeArtgs()[numGen][i];
+                            sa1 += Start.GetPerson(p2).GetCodeArtgs()[numGen][i];
                         }
                     }
 
-
+                    // Добавляем полученные строки к аргументам
                     answ1.Add(sa1); answ2.Add(sa2);
 
                     // После гена меняем все гены местами
@@ -337,11 +382,16 @@ namespace GenAlgV1
                         answ1.Add(Start.GetPerson(p2).GetCodeArtgs()[i]);
                     }
 
-
+                    // Создаём новые особи
                     Person ch1 = new Person(); Person ch2 = new Person();
+
+                    // Задаём закодированные параметры
                     ch1.SetCodeNumber(_codeArgs, answ1); ch2.SetCodeNumber(_codeArgs, answ2);
+
+                    // Пересчитываем приспособленность
                     ch1.FitnessCalc(_func); ch2.FitnessCalc(_func);
 
+                    // Мутация
                     ch1 = MutationInt(ch1); ch2 = MutationInt(ch2); // Мутация
 
                     answer.AddPerson(ch1); answer.AddPerson(ch2); // Добавляем новые особи
@@ -351,8 +401,6 @@ namespace GenAlgV1
                     answer.AddPerson(Start.GetPerson(p1));
                     answer.AddPerson(Start.GetPerson(p2));
                 }
-
-
             }
 
             return answer;
@@ -425,13 +473,12 @@ namespace GenAlgV1
                     numBit = T.Next(_count);
                     numGen = T.Next(_countArg);
 
-                    Start.GetPerson(i).Inverse(numGen, numBit); // Инвертировали
+                    Start.GetPerson(i).Inverse(numGen, numBit, _codeArgs); // Инвертировали
                     Start.GetPerson(i).FitnessCalc(_func); // Пересчитали значение
                 }
             }
             return Start;
         }
-
 
         private Person Mutation(Person Start)
         {
@@ -447,7 +494,7 @@ namespace GenAlgV1
                 // По всем битам
                 for (int j = 0; j < Start.GetCodeArtgs()[i].Length; j++)
                 {
-                    if (T.NextDouble() < _chanceMutation) Start.Inverse(i, j);
+                    if (T.NextDouble() < _chanceMutation) Start.Inverse(i, j, _codeArgs);
                 }
             }
 
@@ -472,7 +519,6 @@ namespace GenAlgV1
             return Start;
         }
 
-
         // Оператор всплеска
         private Population Spike(Population Start)
         {
@@ -483,10 +529,10 @@ namespace GenAlgV1
 
             do
             {
-                do
-                {
+               /* do
+                {*/
                     temp = T.Next(Start._CountPersons);
-                } while (index.Select(x => x == temp).Any() != true); // Генерим число, пока такое есть
+               // } while (index.Select(x => x == temp).Any() != true); // Генерим число, пока такое есть
 
                 index.Add(temp);
 
@@ -508,6 +554,36 @@ namespace GenAlgV1
 
             Start.CalcFitnessAll(_func);
             return Start;
+        }
+
+        private Population Compact(Population Start)
+        {
+            if (_type == TypeCode.IntCode)
+            {
+                Population newpop = new Population();
+
+                _codeArgs[2] += _compactSize; // Улучшили точность
+                SetGr(_codeArgs); // Пересохраним
+
+                foreach (Person k in Start._population)
+                {
+                    List<double> temp = new List<double>();
+
+                    // Сохранили цыфирки
+                    foreach (double ch in k.GetArgs())
+                    {
+                        temp.Add(ch);
+                    }
+
+                    Person pers = new Person();
+                    pers.SetNumber(_codeArgs, temp);
+                    newpop.AddPerson(pers);
+                }
+
+                newpop.CalcFitnessAll(_func);
+                return newpop;
+            }
+            else return Start;
         }
     }
 }

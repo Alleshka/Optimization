@@ -130,7 +130,6 @@ namespace GenAlgV1
             return _population[i];
         }
 
-
         public void Sort()
         {
             _population.OrderBy(x => x.GetFitness());

@@ -209,7 +209,7 @@ namespace GenAlgV1
         }
 
 
-        public void Inverse(int Arg, int Bit)
+        public void Inverse(int Arg, int Bit, List<double> args)
         {
             List<string> newString = new List<string>();
 
@@ -232,7 +232,7 @@ namespace GenAlgV1
                 }
             }
 
-            SetCodeNumber(newString); // Сохраняем строку
+            SetCodeNumber(args, newString); // Сохраняем строку
         }
     }
 }

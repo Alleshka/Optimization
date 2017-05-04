@@ -1,0 +1,54 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1" MembersFormat="FullSignature">
+  <Class Name="GenAlgV1.Population">
+    <Position X="10.25" Y="2" Width="2.25" />
+    <TypeIdentifier>
+      <HashCode>AAAABAAgAAAAAgQAABAQAAAAAAAAIAAAAAQAAAAEAEA=</HashCode>
+      <FileName>Population.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GenAlgV1.LogClass" Collapsed="true">
+    <Position X="0.5" Y="2" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>ACEAAAAEAAAAAAAQAAAAAAAAAEAAAAABEAAIAAQAAAA=</HashCode>
+      <FileName>GenAlgWorck.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GenAlgV1.AnswerClass" Collapsed="true">
+    <Position X="2.75" Y="2" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAEAAAAAAAAAAAACAAAgAAAAAAAAAAEAAAAgAA=</HashCode>
+      <FileName>GenAlgWorck.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GenAlgV1.GenAlgWorck">
+    <Position X="5" Y="2" Width="1.5" />
+    <Compartments>
+      <Compartment Name="Fields" Collapsed="true" />
+      <Compartment Name="Methods" Collapsed="true" />
+    </Compartments>
+    <TypeIdentifier>
+      <HashCode>QAEABCAoCAAECAYRQRoCAEAAQABAAMIgUADBAIQNwBE=</HashCode>
+      <FileName>GenAlgWorck.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GenAlgV1.Person">
+    <Position X="7.25" Y="2" Width="2.25" />
+    <TypeIdentifier>
+      <HashCode>DEAgAgAAAAQACQQAAApAAgAQAAAIAAAABgAAAAAEgAA=</HashCode>
+      <FileName>Person.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="System.Object" Collapsed="true">
+    <Position X="5.75" Y="0.75" Width="1.5" />
+    <TypeIdentifier />
+  </Class>
+  <Enum Name="GenAlgV1.TypeCode" Collapsed="true">
+    <Position X="13.5" Y="0.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAIAAAABAAAAAAAAAA=</HashCode>
+      <FileName>Person.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>
