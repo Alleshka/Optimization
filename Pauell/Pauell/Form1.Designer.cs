@@ -51,6 +51,12 @@
             this.label4 = new System.Windows.Forms.Label();
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
             this.сделатьОтчётToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.считатьФункцииToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.контрольныеToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.практическиеToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.textBox4 = new System.Windows.Forms.TextBox();
+            this.label5 = new System.Windows.Forms.Label();
+            this.progressBar1 = new System.Windows.Forms.ProgressBar();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.trackBar1)).BeginInit();
             this.menuStrip1.SuspendLayout();
@@ -98,36 +104,6 @@
             // comboBox1
             // 
             this.comboBox1.FormattingEnabled = true;
-            this.comboBox1.Items.AddRange(new object[] {
-            "x1^2+x2^2-x1*x2+x2",
-            "x1^2+3*x2^2+3*x1*x2+x1",
-            "(x2-x1)^2+(1-x1)^2",
-            "2*x1^2+2*x2^2-2*x1*x2-6*x1-6",
-            "4*x1^2+4*x2^2-4*x1*x2-12*x2",
-            "2*x1^2+2*x2^2-x1*x2+x1+10",
-            "2*x1^2+x2^2-2*x1*x2+x2",
-            "x1^2+2*x2^2-2*x1*x2+x1",
-            "4*x1^2+4*x2^2-6*x1*x2+x1",
-            "2*x1^2+2*x2^2+2*x1*x2-x1+1",
-            "x1^2+2*x2^2-2*x1*x2+x2",
-            "2*x1^2+2*x2^2+2*x1*x2+x1+6",
-            "2*x1^2+x2^2-2*x1*x2+x1",
-            "3*x1^2+3*x2^2+3*x1*x2-x1",
-            "2*x1^2+x2^2-x1*x2+x1",
-            "4*x1^2+2*x2^2-3*x1*x2+2*x1",
-            "(1-x2)^2+(x1-x2)^2",
-            "2*x1^2+2*x2^2-x1*x2+x1",
-            "3*x1^2+3*x2^2-x1*x2+x1",
-            "x1^2+2*x2^2-2*x1*x2+1",
-            "4*x1^2+4*x2^2-x1*x2-x1",
-            "x1^2+4*x2^2-x1*x2+x1",
-            "3*x1^2+x2^2+3*x1*x2+x1",
-            "4*x1^2+3*x2^2-4*x1*x2+x1",
-            "(x1-x2)^2+(x2-1)^2",
-            "(x1-x2)^2+(x2+1)^2",
-            "2*x1^2+4*x2^2+x1*x2+x1",
-            "2*x1^2+x2^2-2*x1*x2+1",
-            "2*x1^2+x2^2-2*x1*x2-2*x1+1"});
             this.comboBox1.Location = new System.Drawing.Point(102, 48);
             this.comboBox1.Name = "comboBox1";
             this.comboBox1.Size = new System.Drawing.Size(206, 24);
@@ -284,7 +260,7 @@
             // 
             // trackBar1
             // 
-            this.trackBar1.Location = new System.Drawing.Point(374, 171);
+            this.trackBar1.Location = new System.Drawing.Point(350, 132);
             this.trackBar1.Maximum = 1000;
             this.trackBar1.Minimum = 1;
             this.trackBar1.Name = "trackBar1";
@@ -296,7 +272,7 @@
             // label4
             // 
             this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(415, 206);
+            this.label4.Location = new System.Drawing.Point(364, 179);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(46, 17);
             this.label4.TabIndex = 22;
@@ -306,6 +282,7 @@
             // 
             this.menuStrip1.ImageScalingSize = new System.Drawing.Size(20, 20);
             this.menuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.считатьФункцииToolStripMenuItem,
             this.сделатьОтчётToolStripMenuItem});
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
@@ -320,11 +297,61 @@
             this.сделатьОтчётToolStripMenuItem.Text = "Сделать отчёт";
             this.сделатьОтчётToolStripMenuItem.Click += new System.EventHandler(this.сделатьОтчётToolStripMenuItem_Click);
             // 
+            // считатьФункцииToolStripMenuItem
+            // 
+            this.считатьФункцииToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.контрольныеToolStripMenuItem,
+            this.практическиеToolStripMenuItem});
+            this.считатьФункцииToolStripMenuItem.Name = "считатьФункцииToolStripMenuItem";
+            this.считатьФункцииToolStripMenuItem.Size = new System.Drawing.Size(139, 24);
+            this.считатьФункцииToolStripMenuItem.Text = "Считать функции";
+            // 
+            // контрольныеToolStripMenuItem
+            // 
+            this.контрольныеToolStripMenuItem.Name = "контрольныеToolStripMenuItem";
+            this.контрольныеToolStripMenuItem.Size = new System.Drawing.Size(181, 26);
+            this.контрольныеToolStripMenuItem.Text = "Контрольные";
+            this.контрольныеToolStripMenuItem.Click += new System.EventHandler(this.контрольныеToolStripMenuItem_Click);
+            // 
+            // практическиеToolStripMenuItem
+            // 
+            this.практическиеToolStripMenuItem.Name = "практическиеToolStripMenuItem";
+            this.практическиеToolStripMenuItem.Size = new System.Drawing.Size(181, 26);
+            this.практическиеToolStripMenuItem.Text = "Практические";
+            this.практическиеToolStripMenuItem.Click += new System.EventHandler(this.практическиеToolStripMenuItem_Click);
+            // 
+            // textBox4
+            // 
+            this.textBox4.Location = new System.Drawing.Point(489, 207);
+            this.textBox4.Name = "textBox4";
+            this.textBox4.Size = new System.Drawing.Size(75, 22);
+            this.textBox4.TabIndex = 24;
+            this.textBox4.Text = "15";
+            // 
+            // label5
+            // 
+            this.label5.AutoSize = true;
+            this.label5.Location = new System.Drawing.Point(333, 210);
+            this.label5.Name = "label5";
+            this.label5.Size = new System.Drawing.Size(121, 17);
+            this.label5.TabIndex = 25;
+            this.label5.Text = "Макс время (сек)";
+            // 
+            // progressBar1
+            // 
+            this.progressBar1.Location = new System.Drawing.Point(334, 235);
+            this.progressBar1.Name = "progressBar1";
+            this.progressBar1.Size = new System.Drawing.Size(230, 23);
+            this.progressBar1.TabIndex = 26;
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1234, 559);
+            this.Controls.Add(this.progressBar1);
+            this.Controls.Add(this.label5);
+            this.Controls.Add(this.textBox4);
             this.Controls.Add(this.label4);
             this.Controls.Add(this.trackBar1);
             this.Controls.Add(this.checkBox8);
@@ -385,6 +412,12 @@
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.MenuStrip menuStrip1;
         private System.Windows.Forms.ToolStripMenuItem сделатьОтчётToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem считатьФункцииToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem контрольныеToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem практическиеToolStripMenuItem;
+        private System.Windows.Forms.TextBox textBox4;
+        private System.Windows.Forms.Label label5;
+        private System.Windows.Forms.ProgressBar progressBar1;
     }
 }
 

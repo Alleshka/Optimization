@@ -37,6 +37,8 @@ namespace Pauell
         private string _func;
         private Vector X0;
 
+        private int livetime;
+
         private List<string> answers;
 
         public Form1()
@@ -66,6 +68,10 @@ namespace Pauell
         {
             try
             {
+                progressBar1.Minimum = 0;
+                livetime = Convert.ToInt32(textBox4.Text);
+                progressBar1.Maximum = livetime;
+
                 Start();
                 pictureBox1.Refresh();
             }
@@ -77,7 +83,6 @@ namespace Pauell
 
         private void Start()
         {
-
             answers = new List<string>();
 
             PosP1 = null;
@@ -110,20 +115,21 @@ namespace Pauell
 
             X0 = new Vector(variable.ToArray());
 
+            Thread starttime = new Thread(StartTime);
+            starttime.Start();
+
             _ThreadPaul = new Thread(PaulsStart);
             _ThreadRoss = new Thread(RossenbrokStart);
             _ThreadHD = new Thread(HDStart);
+           
 
             _ThreadRoss.Start();
             _ThreadHD.Start();
             _ThreadPaul.Start();
-
-            _ThreadRoss.Join();
-            _ThreadPaul.Join();
-            _ThreadHD.Join();
+           
+            starttime.Join();
 
             PrintText();
-
         }
 
         private void PaulsStart()
@@ -165,6 +171,28 @@ namespace Pauell
             PrintText();
         }
 
+        private void StartTime()
+        {
+            for (int i = 0; i <= livetime; i++)
+            {
+
+                if (answers.Count >= 5)
+                {
+                    progressBar1.Value = livetime;
+                    answers.Add("Все потоки завершили свою работу");
+                    return;
+                }
+                Thread.Sleep(1000);
+                progressBar1.Value = i;
+            }
+
+            answers.Add("Время кончилось");
+
+            _ThreadHD.Abort();
+            _ThreadPaul.Abort();
+            _ThreadRoss.Abort();
+        }
+
         private void PrintText()
         {
             textBox3.Text = "";
@@ -202,8 +230,9 @@ namespace Pauell
             }
 
             // Рисуем позиции
-            if ((PosP1 != null)&&(checkBox1.Checked))
+            if ((PosP1 != null) && (checkBox1.Checked))
             {
+                checkBox1.ForeColor = Color.Red;
                 if (checkBox6.Checked == true)
                 {
                     g.FillRectangle(Brushes.Black, Convert.ToSingle(w + mash * PosP1[0].ch[0]), Convert.ToSingle(h - mash * PosP1[0].ch[1]), 3, 3);
@@ -215,9 +244,11 @@ namespace Pauell
                     PrintVector(g, System.Drawing.Pens.Red, PosP1[i], PosP1[i + 1]);
                 }
             }
+            else checkBox1.ForeColor = Color.Black;
 
-            if ((PosP2 != null)&&(checkBox2.Checked))
+            if ((PosP2 != null) && (checkBox2.Checked))
             {
+                checkBox2.ForeColor = Color.Green;
                 if (checkBox6.Checked == true)
                 {
                     g.FillRectangle(Brushes.Black, Convert.ToSingle(w + mash * PosP2[0].ch[0]), Convert.ToSingle(h - mash * PosP2[0].ch[1]), 3, 3);
@@ -229,9 +260,11 @@ namespace Pauell
                     PrintVector(g, System.Drawing.Pens.Green, PosP2[i], PosP2[i + 1]);
                 }
             }
+            else checkBox2.ForeColor = Color.Black;
 
-            if ((PosP3 != null)&&(checkBox3.Checked))
+            if ((PosP3 != null) && (checkBox3.Checked))
             {
+                checkBox3.ForeColor = Color.Blue;
                 if (checkBox6.Checked == true)
                 {
                     g.FillRectangle(Brushes.Black, Convert.ToSingle(w + mash * PosP3[0].ch[0]), Convert.ToSingle(h - mash * PosP3[0].ch[1]), 5, 3);
@@ -242,8 +275,11 @@ namespace Pauell
                     PrintVector(g, System.Drawing.Pens.Blue, PosP3[i], PosP3[i + 1]);
                 }
             }
-            if ((PosRossen != null)&&(checkBox5.Checked))
+            else checkBox3.ForeColor = Color.Black;
+
+            if ((PosRossen != null) && (checkBox5.Checked))
             {
+                checkBox5.ForeColor = Color.DarkOrange;
                 if (checkBox6.Checked == true)
                 {
                     g.FillRectangle(Brushes.Black, Convert.ToSingle(w + mash * PosRossen[0].ch[0]), Convert.ToSingle(h - mash * PosRossen[0].ch[1]), 3, 3);
@@ -254,9 +290,11 @@ namespace Pauell
                     PrintVector(g, System.Drawing.Pens.DarkOrange, PosRossen[i], PosRossen[i + 1]);
                 }
             }
+            else checkBox5.ForeColor = Color.Black;
 
             if ((PosHuck != null) && (checkBox8.Checked))
             {
+                checkBox8.ForeColor = Color.DarkKhaki;
                 if (checkBox6.Checked == true)
                 {
                     g.FillRectangle(Brushes.Black, Convert.ToSingle(w + mash * PosHuck[0].ch[0]), Convert.ToSingle(h - mash * PosHuck[0].ch[1]), 3, 3);
@@ -267,6 +305,7 @@ namespace Pauell
                     PrintVector(g, System.Drawing.Pens.DarkKhaki, PosHuck[i], PosHuck[i + 1]);
                 }
             }
+            else checkBox8.ForeColor = Color.Black;
         }
         private void PrintVector(Graphics e, System.Drawing.Pen p, Vector v1, Vector v2)
         {
@@ -341,7 +380,6 @@ namespace Pauell
             label4.Text = Convert.ToString(trackBar1.Value);
             pictureBox1.Refresh();
         }
-
         private void сделатьОтчётToolStripMenuItem_Click(object sender, EventArgs e)
         {
             StreamWriter temp = new StreamWriter(File.Open("tmptext", FileMode.Append));
@@ -360,5 +398,27 @@ namespace Pauell
 
             temp.Close();
         }
+        private void контрольныеToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            StreamReader temp = new StreamReader(File.OpenRead("D:\\Project\\Sem10\\Optimization\\Pauell\\Pauell\\FuncEasy.txt"));
+
+            comboBox1.Items.Clear();
+            while (!temp.EndOfStream)
+            {
+                comboBox1.Items.Add(temp.ReadLine());
+            }
+        }
+        private void практическиеToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            StreamReader temp = new StreamReader(File.OpenRead("D:\\Project\\Sem10\\Optimization\\Pauell\\Pauell\\FuncHard.txt"));
+
+            comboBox1.Items.Clear();
+            while (!temp.EndOfStream)
+            {
+                comboBox1.Items.Add(temp.ReadLine());
+            }
+        }
+
+        
     }
 }

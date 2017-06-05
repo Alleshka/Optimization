@@ -33,16 +33,14 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Lab3AG, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\Lab3AG\Lab3AG\bin\Debug\Lab3AG.dll</HintPath>
+    <Reference Include="Lab3AG">
+      <HintPath>..\..\AllLibs\Lab3AG.dll</HintPath>
     </Reference>
-    <Reference Include="MartixVectorAG, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\MartixVectorAG\MartixVectorAG\bin\Debug\MartixVectorAG.dll</HintPath>
+    <Reference Include="MartixVectorAG">
+      <HintPath>..\..\AllLibs\MartixVectorAG.dll</HintPath>
     </Reference>
     <Reference Include="ParserAG">
-      <HintPath>..\..\Optimization\Lab3AG\Lab3AG\bin\Debug\ParserAG.dll</HintPath>
+      <HintPath>..\..\AllLibs\ParserAG.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -94,6 +92,10 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="FuncEasy.txt" />
+    <Content Include="FuncHard.txt" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

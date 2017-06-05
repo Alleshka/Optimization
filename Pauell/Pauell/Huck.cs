@@ -5,7 +5,6 @@ using System.Text;
 using System.Threading.Tasks;
 using ParserAG;
 using MartixVectorAG;
-using Lab3AG;
 
 namespace Pauell
 {

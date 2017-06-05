@@ -144,7 +144,7 @@ namespace Lab3AG
             return new Vector(ch);
         }
 
-        private double zs2(Vector ch)
+        private Vector zs2(Vector ch)
         {
             double a = ch.ch[0]; double b = ch.ch[1];
 
@@ -160,7 +160,6 @@ namespace Lab3AG
 
             do
             {
-
                 if (y(l) < y(m))
                 {
                     b = m;
@@ -182,13 +181,173 @@ namespace Lab3AG
             }
             while ((b - a) >= _eps);
 
-            return (a + b) / 2;
+            // return (a + b) / 2;
 
             double[] temp = new double[2];
             temp[0] = a;
             temp[1] = b;
             
+            return new Vector(temp);
+        }
+
+
+        private Vector zs2_2(Vector ch)
+        {
+            double a = ch.ch[0];
+            double b = ch.ch[1];
+
+            double l = Math.Abs(a - b);
+            int k = 0;
+
+            double tau = (Math.Sqrt(5) - 1) / 2;
+            double tau2 = (3 - Math.Sqrt(5)) / 2;
+
+            double x1 = a + tau * l;
+            double x2 = a + b - x1;
+            do
+            {
+
+                if ((y(x1) < y(x2)) && (x1 < x2))
+                {
+                    //a=a;
+                    b = x2;
+                    //x1=x1;
+                }
+                else
+                {
+                    if ((x1 < x2) && (y(x1) > y(x2)))
+                    {
+                        a = x1;
+                        //b = b;
+                        x1 = x2;
+
+                    }
+                    else
+                    {
+                        if ((x1 > x2) && (y(x1) > y(x2)))
+                        {
+                            // a = a;
+                            b = x1;
+                            x1 = x2;
+                        }
+                        else
+                        {
+                            // b = b;
+                            a = x2;
+                            x1 = x1;
+                        }
+                    }
+                }
+                x2 = a + b - x1;
+                k = k + 1;
+                if (k >= this._maxCount) break;
+            } while (Math.Abs(b - a) <= this._eps);
+            //cout << "k1 gs = " << k;
+
+            double[] temp = new double[2];
+            temp[0] = a;
+            temp[1] = b;
+
+            return new Vector(temp);
+
+        }
+        private double DCK(Vector ch)
+        {
+            double a = ch.ch[0];
+            double b = ch.ch[1];
+
+            double h = 0.01;
+
+            int k = 1;
+            double c, t;
+
+            c = (a + b) / 2 + h;
+
+            t = dd(a, b, c);
+
+            do
+            {
+                t = dd(a, b, c);
+                if (c < t)
+                {
+                    if (y(c) > y(t))
+                    {
+                        a = c;
+                        c = t;
+                    }
+                    else { b = t; }
+                }
+                else
+                {
+                    if (y(c) > y(t))
+                    {
+                        b = c;
+                        c = t;
+                    }
+                    else { a = t; }
+                }
+		
+            } while ((Math.Abs((b - t) / b) >= _eps) && (Math.Abs((y(b) - y(t))) / y(b)) >= _eps);
+
+            return (a + b) / 2;
+
+            double[] temp = new double[2];
+            temp[0] = a;
+            temp[1] = b;
+
            // return new Vector(temp);
+        }
+
+        double dd(double a, double b, double c)
+        {
+            return b + 0.5 * ((b - a) * (y(a) - y(b))) / (y(a) - 2 * y(b) + y(c));
+        }
+
+
+        private double balcan(Vector ch)
+        {
+            double a = ch.ch[0];
+            double b = ch.ch[1];
+
+            double tempX = (a + b) / 2; int k = 1;
+
+            double x1, x2;
+            double l;
+
+            while (true)
+            {
+                l = Math.Abs(b - a);
+
+
+                x1 = a + l / 4;
+                x2 = b - l / 4;
+
+                if (y(x1) < y(tempX))
+                {
+                    b = tempX;
+                    tempX = x1;
+                }
+                else
+                {
+                    if (y(tempX) > y(x2))
+                    {
+                        a = tempX;
+                        tempX = x2;
+                    }
+                    else
+                    {
+                        a = x1;
+                        b = x2;
+                    }
+                }
+
+                k = k + 1;
+                if (k >= _maxCount) break;
+
+                if (l < this._eps) break;
+            }
+
+            return tempX;
         }
        
         public double Start(string func, Vector X0, Vector P, double eps)
@@ -197,14 +356,17 @@ namespace Lab3AG
             this._X0 = X0;
             this._P = P;
             this._eps = eps;
-
-            this._maxCount = 35;
+            double min;
+            this._maxCount = 100;
 
             Parser temp = new Parser();
             this._countVar = temp.CheckParse(_func);
 
-            Vector ch = Sven1();      
-            double min = zs2(ch);
+            Vector ch = Sven1();
+
+            ch = zs2_2(ch);
+            // min = DCK(ch);
+            min = balcan(ch);
 
             return min;
         }
